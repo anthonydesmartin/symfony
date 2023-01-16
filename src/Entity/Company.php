@@ -18,19 +18,19 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $mail = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $tel = null;
 
-    #[ORM\Column]
-    private ?int $siret = null;
+    #[ORM\Column(length: 14)]
+    private ?bigint $siret = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $head_office = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $register = null;
 
     #[ORM\OneToMany(mappedBy: 'compagnyContract', targetEntity: Contract::class)]
@@ -48,12 +48,20 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\OneToMany(mappedBy: 'Company', targetEntity: Relation::class)]
+    private Collection $relations;
+
+    #[ORM\OneToMany(mappedBy: 'Company', targetEntity: Message::class)]
+    private Collection $messages;
+
     public function __construct()
     {
         $this->contracts = new ArrayCollection();
         $this->streamers = new ArrayCollection();
         $this->makeProposal = new ArrayCollection();
         $this->representatives = new ArrayCollection();
+        $this->relations = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -258,6 +266,66 @@ class Company
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Relation>
+     */
+    public function getRelations(): Collection
+    {
+        return $this->relations;
+    }
+
+    public function addRelation(Relation $relation): self
+    {
+        if (!$this->relations->contains($relation)) {
+            $this->relations->add($relation);
+            $relation->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelation(Relation $relation): self
+    {
+        if ($this->relations->removeElement($relation)) {
+            // set the owning side to null (unless already changed)
+            if ($relation->getCompany() === $this) {
+                $relation->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getCompany() === $this) {
+                $message->setCompany(null);
+            }
+        }
 
         return $this;
     }

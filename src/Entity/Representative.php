@@ -23,6 +23,7 @@ class Representative
     private ?string $role = null;
 
     #[ORM\ManyToOne(inversedBy: 'representatives')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Company $hasRepresentative = null;
 
     public function getId(): ?int

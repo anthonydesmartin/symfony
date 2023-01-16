@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\StreamersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StreamersRepository::class)]
@@ -24,8 +25,8 @@ class Streamer
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mail = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $siret = null;
+    #[ORM\Column(length: 14, nullable: true)]
+    private ?bigint $siret = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'streamers')]
     private Collection $streamThis;
@@ -48,6 +49,18 @@ class Streamer
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Relation::class)]
+    private Collection $relations;
+
+    #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Message::class)]
+    private Collection $messages;
+
+    #[ORM\Column]
+    private ?bool $IsMature = null;
+
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?string $streamerId = null;
+
     public function __construct()
     {
         $this->streamThis = new ArrayCollection();
@@ -56,6 +69,8 @@ class Streamer
         $this->hasProposal = new ArrayCollection();
         $this->isOn = new ArrayCollection();
         $this->isContent = new ArrayCollection();
+        $this->relations = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -275,6 +290,90 @@ class Streamer
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Relation>
+     */
+    public function getRelations(): Collection
+    {
+        return $this->relations;
+    }
+
+    public function addRelation(Relation $relation): self
+    {
+        if (!$this->relations->contains($relation)) {
+            $this->relations->add($relation);
+            $relation->setStreamer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelation(Relation $relation): self
+    {
+        if ($this->relations->removeElement($relation)) {
+            // set the owning side to null (unless already changed)
+            if ($relation->getStreamer() === $this) {
+                $relation->setStreamer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setStreamer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getStreamer() === $this) {
+                $message->setStreamer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isIsMature(): ?bool
+    {
+        return $this->IsMature;
+    }
+
+    public function setIsMature(bool $IsMature): self
+    {
+        $this->IsMature = $IsMature;
+
+        return $this;
+    }
+
+    public function getStreamerId(): ?string
+    {
+        return $this->streamerId;
+    }
+
+    public function setStreamerId(string $streamerId): self
+    {
+        $this->streamerId = $streamerId;
 
         return $this;
     }

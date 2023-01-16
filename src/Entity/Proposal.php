@@ -20,12 +20,15 @@ class Proposal
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'hasProposal')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Streamer $streamer = null;
 
     #[ORM\ManyToOne(inversedBy: 'makeProposal')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
     #[ORM\ManyToOne(inversedBy: 'proposals')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?ProposalStatus $hasProposalStatus = null;
 
     public function getId(): ?int

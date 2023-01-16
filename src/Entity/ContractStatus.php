@@ -17,6 +17,7 @@ class ContractStatus
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'hasContractStatus')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Contract $contract = null;
 
     public function getId(): ?int

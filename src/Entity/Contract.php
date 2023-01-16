@@ -32,10 +32,12 @@ class Contract
     private ?string $modalities = null;
 
     #[ORM\ManyToOne(inversedBy: 'streamerContract')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Streamer $streamer = null;
 
     #[ORM\ManyToOne(inversedBy: 'contracts')]
-    private ?Company $compagnyContract = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'contract', targetEntity: ContractStatus::class)]
     private Collection $hasContractStatus;
@@ -122,14 +124,14 @@ class Contract
         return $this;
     }
 
-    public function getCompagnyContract(): ?Company
+    public function getCompany(): ?Company
     {
-        return $this->compagnyContract;
+        return $this->company;
     }
 
-    public function setCompagnyContract(?Company $compagnyContract): self
+    public function setCompany(?Company $company): self
     {
-        $this->compagnyContract = $compagnyContract;
+        $this->company = $company;
 
         return $this;
     }

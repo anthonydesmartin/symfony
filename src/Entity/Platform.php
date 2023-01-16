@@ -22,6 +22,7 @@ class Platform
     private Collection $streamers;
 
     #[ORM\ManyToOne(inversedBy: 'platforms')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?PlatformType $hasType = null;
 
     public function __construct()
