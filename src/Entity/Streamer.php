@@ -2,32 +2,46 @@
 
 namespace App\Entity;
 
-use App\Repository\StreamersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\StreamerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: StreamersRepository::class)]
-class Streamer
+#[ORM\Entity(repositoryClass: StreamerRepository::class)]
+class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
     #[ORM\Column]
-    private ?int $followers = null;
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
+
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?string $followers = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mail = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bigint $siret = null;
+    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    private ?string $siret = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $id_streamer = null;
+
+    #[ORM\Column]
+    private ?bool $isMature = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'streamers')]
     private Collection $streamThis;
@@ -47,20 +61,11 @@ class Streamer
     #[ORM\ManyToMany(targetEntity: TypeOfContent::class, inversedBy: 'streamers')]
     private Collection $isContent;
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
-
     #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Relation::class)]
     private Collection $relations;
 
     #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Message::class)]
     private Collection $messages;
-
-    #[ORM\Column]
-    private ?bool $IsMature = null;
-
-    #[ORM\Column(type: Types::BIGINT)]
-    private ?string $streamerId = null;
 
     public function __construct()
     {
@@ -91,12 +96,65 @@ class Streamer
         return $this;
     }
 
-    public function getFollowers(): ?int
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getFollowers(): ?string
     {
         return $this->followers;
     }
 
-    public function setFollowers(int $followers): self
+    public function setFollowers(string $followers): self
     {
         $this->followers = $followers;
 
@@ -108,21 +166,45 @@ class Streamer
         return $this->mail;
     }
 
-    public function setMail(?string $mail): self
+    public function setMail(string $mail): self
     {
         $this->mail = $mail;
 
         return $this;
     }
 
-    public function getSiret(): ?int
+    public function getSiret(): ?string
     {
         return $this->siret;
     }
 
-    public function setSiret(?int $siret): self
+    public function setSiret(?string $siret): self
     {
         $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getIdStreamer(): ?string
+    {
+        return $this->id_streamer;
+    }
+
+    public function setIdStreamer(string $id_streamer): self
+    {
+        $this->id_streamer = $id_streamer;
+
+        return $this;
+    }
+
+    public function isIsMature(): ?bool
+    {
+        return $this->isMature;
+    }
+
+    public function setIsMature(bool $isMature): self
+    {
+        $this->isMature = $isMature;
 
         return $this;
     }
@@ -135,18 +217,18 @@ class Streamer
         return $this->streamThis;
     }
 
-    public function addStreamThi(Category $streamThi): self
+    public function addStreamThis(Category $streamThis): self
     {
-        if (!$this->streamThis->contains($streamThi)) {
-            $this->streamThis->add($streamThi);
+        if (!$this->streamThis->contains($streamThis)) {
+            $this->streamThis->add($streamThis);
         }
 
         return $this;
     }
 
-    public function removeStreamThi(Category $streamThi): self
+    public function removeStreamThis(Category $streamThis): self
     {
-        $this->streamThis->removeElement($streamThi);
+        $this->streamThis->removeElement($streamThis);
 
         return $this;
     }
@@ -283,18 +365,6 @@ class Streamer
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Relation>
      */
@@ -355,27 +425,4 @@ class Streamer
         return $this;
     }
 
-    public function isIsMature(): ?bool
-    {
-        return $this->IsMature;
-    }
-
-    public function setIsMature(bool $IsMature): self
-    {
-        $this->IsMature = $IsMature;
-
-        return $this;
-    }
-
-    public function getStreamerId(): ?string
-    {
-        return $this->streamerId;
-    }
-
-    public function setStreamerId(string $streamerId): self
-    {
-        $this->streamerId = $streamerId;
-
-        return $this;
-    }
 }

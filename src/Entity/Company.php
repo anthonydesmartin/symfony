@@ -2,31 +2,36 @@
 
 namespace App\Entity;
 
-use App\Repository\CompaniesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\CompanyRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: CompaniesRepository::class)]
-class Company
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+class Company implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $siret = null;
+
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
+
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mail = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $tel = null;
-
-    #[ORM\Column]
-    private ?bigint $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $head_office = null;
@@ -45,9 +50,6 @@ class Company
 
     #[ORM\OneToMany(mappedBy: 'hasRepresentative', targetEntity: Representative::class)]
     private Collection $representatives;
-
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'Company', targetEntity: Relation::class)]
     private Collection $relations;
@@ -70,6 +72,71 @@ class Company
         return $this->id;
     }
 
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->siret;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -87,33 +154,9 @@ class Company
         return $this->mail;
     }
 
-    public function setMail(string $mail): self
+    public function setMail(?string $mail): self
     {
         $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getTel(): ?int
-    {
-        return $this->tel;
-    }
-
-    public function setTel(?int $tel): self
-    {
-        $this->tel = $tel;
-
-        return $this;
-    }
-
-    public function getSiret(): ?int
-    {
-        return $this->siret;
-    }
-
-    public function setSiret(int $siret): self
-    {
-        $this->siret = $siret;
 
         return $this;
     }
@@ -123,7 +166,7 @@ class Company
         return $this->head_office;
     }
 
-    public function setHeadOffice(string $head_office): self
+    public function setHeadOffice(?string $head_office): self
     {
         $this->head_office = $head_office;
 
@@ -135,7 +178,7 @@ class Company
         return $this->register;
     }
 
-    public function setRegister(string $register): self
+    public function setRegister(?string $register): self
     {
         $this->register = $register;
 
@@ -259,17 +302,6 @@ class Company
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Relation>

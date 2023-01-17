@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230116151059 extends AbstractMigration
+final class Version20230117151827 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,12 @@ final class Version20230116151059 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE company CHANGE siret siret VARCHAR(14) NOT NULL');
-        $this->addSql('ALTER TABLE streamer CHANGE siret siret VARCHAR(14) DEFAULT NULL');
+        $this->addSql('ALTER TABLE streamer ADD is_mature TINYINT(1) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE company CHANGE siret siret INT NOT NULL');
-        $this->addSql('ALTER TABLE streamer CHANGE siret siret INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE streamer DROP is_mature');
     }
 }
