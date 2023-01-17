@@ -6,6 +6,7 @@ use App\Repository\CompaniesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompaniesRepository::class)]
 class Company
@@ -24,7 +25,7 @@ class Company
     #[ORM\Column(nullable: true)]
     private ?int $tel = null;
 
-    #[ORM\Column(length: 14)]
+    #[ORM\Column]
     private ?bigint $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
