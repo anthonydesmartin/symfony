@@ -11,8 +11,15 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home_page')]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
+        if ($this->isGranted('ROLE_STREAMER')) {
+            return $this->redirectToRoute('app_streamer');
+        }
+        if ($this->isGranted('ROLE_COMPANY')) {
+            return $this->redirectToRoute('app_company');
+        }
 
+        return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
         ]);
     }
 }
