@@ -46,7 +46,14 @@ class StreamerAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('app_streamer'));
+        if (in_array('ROLE_STREAMER', $token->getRoleNames())) {
+            return new RedirectResponse($this->urlGenerator->generate('app_streamer'));
+        }
+        if (in_array('ROLE_COMPANY', $token->getRoleNames())) {
+            return new RedirectResponse($this->urlGenerator->generate('app_company'));
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate('login_error'));
     }
 
     protected function getLoginUrl(Request $request): string
