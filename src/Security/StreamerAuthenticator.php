@@ -54,7 +54,7 @@ class StreamerAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('app_company'));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('login_error'));
+        return new RedirectResponse($this->urlGenerator->generate('home_page'));
     }
 
     protected function getLoginUrl(Request $request): string
