@@ -5,10 +5,14 @@ namespace App\Entity;
 use App\Repository\StreamerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: StreamerRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -113,7 +117,7 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_STREAMER';
 
         return array_unique($roles);
     }

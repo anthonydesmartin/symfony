@@ -56,7 +56,7 @@ class Category
     {
         if (!$this->streamers->contains($streamer)) {
             $this->streamers->add($streamer);
-            $streamer->addStreamThi($this);
+            $streamer->addStreamThis($this);
         }
 
         return $this;
@@ -65,7 +65,7 @@ class Category
     public function removeStreamer(Streamer $streamer): self
     {
         if ($this->streamers->removeElement($streamer)) {
-            $streamer->removeStreamThi($this);
+            $streamer->removeStreamThis($this);
         }
 
         return $this;
