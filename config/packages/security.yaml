@@ -25,6 +25,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            remember_me: true
             lazy: true
             form_login: ~
             provider: chain_provider
@@ -44,8 +45,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-#        - { path: ^/streamer, roles: ROLE_STREAMER }
-#        - { path: ^/company, roles: ROLE_COMPANY }
+        - { path: ^/streamer, roles: ROLE_STREAMER }
+        - { path: ^/company, roles: ROLE_COMPANY }
 
 
 when@test:

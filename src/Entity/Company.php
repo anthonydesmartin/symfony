@@ -6,6 +6,9 @@ use App\Repository\CompanyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements UserInterface, PasswordAuthenticatedUserInterface
