@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StreamerController!{% endblock %}
+{% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="#" ><img style=" **margin-top: -55px; margin-right: -55px; width:60%;**" alt="Logo" src="/img/logo/logo_small.png" class="pull-left"></a>
+            <div class="d-flex align-items-center">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
+                <a class="nav-link" href="#"><img alt="icon" src="icon/daft.png" class="icon-login"></a>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+            </div>
+    </nav>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/MAMP/htdocs/symfony-tp/src/Controller/StreamerController.php'|file_link(0) }}">src/Controller/StreamerController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/MAMP/htdocs/symfony-tp/templates/streamer/index.html.twig'|file_link(0) }}">templates/streamer/index.html.twig</a></code></li>
-    </ul>
-</div>
+      {% block main %}  
+        <main class="container-fluid">
+        
+
+            <div class="left-article">
+            <p>Mes Statistiques :</p>
+            <img alt="graphic" src="img/graphique.png">
+            <p>Superatis Tauri montis verticibus qui ad solis ortum sublimius attolluntur, Cilicia spatiis porrigitur late distentis dives bonis omnibus terra, eiusque lateri dextro adnexa Isauria, pari sorte uberi palmite viget et frugibus minutis, quam mediam navigabile flumen Calycadnus interscindit.</p>
+            </div>
+
+            <div class="right-article ">
+            <p>Offres qui pourrait vous intéresser :</p>
+            <img alt="graphic" src="img/graphique.png">
+            </div>
+
+    
+        
+        </main>
+
+        <div>
+        test
+        </div>
+        {% endblock %}
+
+         <footer id="sticky-footer" class="flex-shrink-0 py-4">
+                    <div class="container text-center">
+                        <small>Copyright &copy; PartnerPact</small>
+                    </div>
+                </footer>
+               
 {% endblock %}
