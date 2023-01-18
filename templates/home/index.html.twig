@@ -3,4 +3,72 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+    <nav class="navbar navbar-light justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="#" ><img style=" **margin-top: -55px; margin-right: -55px; width:60%;**" alt="Logo" src="/img/logo/logo_small.png" class="pull-left"></a>
+            <div class="d-flex">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#">S'inscrire</a>
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Se connecter</a>
+            </div>
+    </nav>
+
+    
+        <main class="container-fluid">
+        {% block section %}
+            <section class="row rounded shadow p-3 mb-5 mt-3">
+                <div class="col  d-flex align-items-center row" >
+                    <h1>Bienvenue dans notre espace de ressource</h1>
+
+                        <h2 class="h2_home">A propos :</h2>
+                            <p class="fs-2 fw-bolder">C’est une plateforme de mise en relation streamers et de marque.
+                                Cette plateforme sécurisera les contrats entre les partis
+                                et agira comme un intermédiaire.
+                            </p>
+
+                </div>
+                <div class="col">
+                            <img style="width:95%" alt="Logo" src="/img/streamspons.png" class="">
+                </div>
+            </section>
+            {% endblock %}
+
+            <aside class="container col-10">
+                    <p  class="fs-2 fw-bolder">Vous voulez vous associer à des streamers influents pour promouvoir votre marque? 
+                    Rejoignez notre plateforme pour découvrir les talents les plus pertinents.
+                    Notre plateforme est le lieu idéal pour vous qui cherchent à s'associer à des streamers pour une campagne de sponsoring réussie.
+
+                    </p>
+
+                    
+
+                    <div class="container col-3">
+
+                    <button type="button" class="btn btn-primary col fs-2 fw-bolder">Retrouvez ici nos Streamers</button>
+                    </div>
+
+                    <hr>
+
+                    <p  class="fs-2 fw-bolder">
+                    Vous êtes à la recherche de nouveaux partenariats pour votre chaîne de streaming? 
+                    Rejoignez notre plateforme et découvrez les opportunités de parrainage uniques qui s'offrent à vous
+                    pour booster votre carrière de streamer.
+
+                    </p>
+
+                    <div class="container col-3">
+
+                    <button type="button" class="btn btn-primary col fs-2 fw-bolder">Retrouvez ici nos Sponsors</button>
+                    </div>
+                
+
+            </aside>
+            
+            
+
+        
+        </main>
+                <footer id="sticky-footer" class="flex-shrink-0 py-4 text-white-50">
+                    <div class="container text-center">
+                        <small>Copyright &copy; PartnerPact</small>
+                    </div>
+                </footer>
 {% endblock %}
