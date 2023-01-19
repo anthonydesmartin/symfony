@@ -11,7 +11,7 @@ class StreamerController extends AbstractController
     #[Route('/streamer', name: 'app_streamer')]
     public function index(): Response
     {
-        return $this->render('streamer/index.html.twig', [
+        return $this->render('streamer/streamer.html.twig', [
             'controller_name' => 'StreamerController',
         ]);
     }
