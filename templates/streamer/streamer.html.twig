@@ -4,67 +4,55 @@
 
 {% block body %}
     <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
-    <a class="navbar-brand" href="#" ><img style=" **margin-top: -55px; margin-right: -55px; width:60%;**" alt="Logo" src="/img/logo/logo_small.png" class="pull-left"></a>
+    <a class="navbar-brand" href="#" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         <div class="d-flex align-items-center">
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
-            <div class="dropdown">
-                <a class="" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                    <img alt="icon" src="icon/daft.png" class="icon-login">
+            <div class="dropdown d-flex align-items-center">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    {{ app.user.username }}
                 </a>
-
+                <img alt="icon" src="icon/daft.png" class="icon-login">
                 <ul class="dropdown-menu dropdown-menu-lg-end">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
                 </ul>
             </div>
 
         </div>
 </nav>
 
-      {% block main %}  
-        <main class="container-fluid d-flex justify-content-between">
-        
-
-            <div class="left-article ">
-            <p>Mes Statistiques :</p>
-            <img alt="graphic" src="img/graphique.png">
-            <p>Superatis Tauri montis verticibus qui ad solis ortum sublimius attolluntur, Cilicia spatiis porrigitur late distentis dives bonis omnibus terra, eiusque lateri dextro adnexa Isauria, pari sorte uberi palmite viget et frugibus minutis, quam mediam navigabile flumen Calycadnus interscindit.</p>
-            </div>
-
-            <div class="right-article d-flex flex-column align-items-center ">
-            <div class="">
-            <p>Offres qui pourrait vous intéresser :</p>
-
-            <ul>
-            <li> <a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Adidas</a></li>
-            <li> <a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Nike</a></li>
-            <li> <a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Reebok</a></li>
-            </ul>     
-            </div>
-            <div class="mt-auto mb-5">       
-            <button type="button" class="btn btn-primary col fs-2 fw-bolder">Rechercher un Sponsor</button>
-            </div>
-          
-
-    
-        
-        </main>
-
-        <div class="container d-flex align-self-end col-3">
-
-                    
-            </div>
-
-        
-        {% endblock %}
-
-         <footer id="sticky-footer" class="flex-shrink-0 py-4">
-                    <div class="container text-center">
-                        <small>Copyright &copy; PartnerPact</small>
+      {% block main %}
+          <main class="container-fluid d-flex justify-content-between">
+              <div class="left-article ">
+                    <p>Mes Statistiques :</p>
+                    <img alt="graphic" src="img/graphique.png">
+                    <p>Superatis Tauri montis verticibus qui ad solis ortum sublimius attolluntur, Cilicia spatiis porrigitur late distentis dives bonis omnibus terra, eiusque lateri dextro adnexa Isauria, pari sorte uberi palmite viget et frugibus minutis, quam mediam navigabile flumen Calycadnus interscindit.</p>
+              </div>
+              <div class="right-article d-flex flex-column align-items-center ">
+                    <div class="">
+                        <h2>Offres qui pourrait vous intéresser :</h2>
+                        <ul>
+                            <li> <a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Adidas</a></li>
+                            <li> <a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Nike</a></li>
+                            <li> <a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Reebok</a></li>
+                        </ul>
                     </div>
-                </footer>
-               
+                    <div class="mt-auto mb-5">
+                        <button type="button" class="btn btn-primary col fs-2 fw-bolder">Rechercher un Sponsor</button>
+                    </div>
+              </div>
+          </main>
+          <div class="container d-flex align-self-end col-3"></div>
+
+        
+      {% endblock %}
+            <footer id="sticky-footer" class="flex-shrink-0 py-4">
+                <div class="container text-center">
+                    <small>Copyright &copy; PartnerPact</small>
+                </div>
+            </footer>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% endblock %}
