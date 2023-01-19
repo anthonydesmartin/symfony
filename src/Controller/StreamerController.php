@@ -15,4 +15,11 @@ class StreamerController extends AbstractController
             'controller_name' => 'StreamerController',
         ]);
     }
+    #[Route('/streamer/profile', name: 'app_streamer_profile')]
+    public function profile(): Response
+    {
+        return $this->render('streamer/profile.html.twig', [
+            'controller_name' => 'Profile',
+        ]);
+    }
 }
