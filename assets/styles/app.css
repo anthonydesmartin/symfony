@@ -64,17 +64,22 @@ footer{
   .left-article{
     
   background:rgb(212, 173, 220);
-  position: relative;
-  width: 200px;
+  margin-top: 20px;
+  width: auto;
+  margin-right: 5px;
   
+}
 
-  }
   .right-article{
    
   background:rgb(212, 173, 220);
   margin-top: 20px;
-  position: relative;
-  width: 200px;
+  margin-left: 5px;
+  width: 1200px;
+  
+ 
+  
+  
   
 
   }
