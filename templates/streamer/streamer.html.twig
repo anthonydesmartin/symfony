@@ -13,7 +13,7 @@
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                     {{ app.user.username }}
                 </a>
-                <img alt="icon" src="icon/daft.png" class="icon-login">
+                <img alt="icon" src="{{ pp }}" class="icon-login">
                 <ul class="dropdown-menu dropdown-menu-lg-end">
                     <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
                     <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
@@ -48,7 +48,7 @@
           </main>
           <div class="container d-flex align-self-end col-3"></div>
 
-        
+
       {% endblock %}
             <footer id="sticky-footer" class="flex-shrink-0 py-4">
                 <div class="container text-center">

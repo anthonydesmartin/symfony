@@ -14,20 +14,80 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/register/streamer', name: 'app_register_streamer')]
-    public function registerStreamer(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
-    {
-        $user = new Streamer();
 
+    #[Route('/register/streamer', name: 'app_register_streamer')]
+    public function registerStreamer(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        StreamerAuthenticator $authenticator,
+        EntityManagerInterface $entityManager,
+        HttpClientInterface $client
+    ): Response {
+        $user = new Streamer();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        function clearHeaders(){
+            header_remove('Authorization');
+            header_remove('Client-Id');
+            header_remove('ContentType');
+        }
+
+        function getStreamerTwitchIdAndPp($form, $client)
+        {
+            clearHeaders();
+            $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
+            $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
+            $username = $form->get('username')->getData();
+            $response = $client->request(
+                'GET',
+                'https://api.twitch.tv/helix/users?login='.$username,
+                [
+                    'headers' => [
+                        "Authorization: $twitch_oauth_token",
+                        "Client-Id: $twitch_client_id",
+                        "ContentType: application/json",
+                    ],
+                ]
+            );
+
+            return $response->toArray()['data'][0];
+        }
+
+        function getStreamerTwitchFollowers($form, $client,$id)
+        {
+            clearHeaders();
+            $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
+            $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
+            $response = $client->request(
+                'GET',
+                'https://api.twitch.tv/helix/users/follows?to_id='.$id,
+                [
+                    'headers' => [
+                        "Authorization: $twitch_oauth_token",
+                        "Client-Id: $twitch_client_id",
+                        "ContentType: application/json",
+                    ],
+                ]
+            );
+
+            return $response->toArray()['total'];
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            $streamer = getStreamerTwitchIdAndPp($form, $client);
+            $user->setIdStreamer($streamer['id']);
+            $followers = getStreamerTwitchFollowers($form, $client, $streamer['id']);
+            $user->setFollowers($followers);
+            $pp = $streamer['profile_image_url'];
+            $user->setProfilePicture($pp);
+//             encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -47,6 +107,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+            // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(
                 $user,
@@ -61,8 +122,13 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register/company', name: 'app_register_company')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        StreamerAuthenticator $authenticator,
+        EntityManagerInterface $entityManager
+    ): Response {
         $user = new Company();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -88,6 +154,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
             // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(

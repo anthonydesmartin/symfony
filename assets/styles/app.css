@@ -3,7 +3,12 @@
 body {
     background-color: #E4DBF5;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color:#08415C
+    color:#08415C;
+    height: 100vh;
+}
+
+main {
+    height: 100%;
 }
 
 .navbar{

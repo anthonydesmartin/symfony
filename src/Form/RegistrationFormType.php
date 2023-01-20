@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'register/company') || strpos($_SERVER['REQUEST_URI'], 'company/profile/edit') ) {
+        if (strpos($_SERVER['REQUEST_URI'], 'register/company')) {
             $builder
                 ->add('siret', TextType::class,['label' => 'Siret', 'required' => true])
                 ->add('name', TextType::class,['label' => 'Votre nom', 'required' => true])
@@ -41,25 +41,22 @@ class RegistrationFormType extends AbstractType
                     'second_options' => ['label' => 'Comfirmer le Password'],
                 ])
                 ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);
-        } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer') || strpos($_SERVER['REQUEST_URI'], 'streamer/profile/edit')) {
+        } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer')) {
             $builder
-                ->add('username', TextType::class,['label' => 'Pseudo', 'required' => true])
+                ->add('username', TextType::class,['label' => 'Nom d’utilisateur', 'required' => true, 'attr' => ['placeholder' => 'Nom d’utilisateur utiliser sur la plateforme de streaming']])
                 ->add('mail', EmailType::class, ['label' => 'Mail',
-                    'required' => true])
-                ->add('siret', TextType::class,['label' => 'SIRET'])
+                    'required' => true, 'attr' => ['placeholder' => 'johndoe@email.com']])
+                ->add('siret', TextType::class,['label' => 'SIRET', 'required' => false, 'attr' => ['placeholder' => '78467169500087']])
                 ->add('password', RepeatedType::class, [
                     'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
-                    'options' => ['attr' => ['class' => 'password-field']],
+                    'options' => ['attr' => ['class' => 'password-field', 'placeholder' => '**************']],
                     'required' => true,
-                    'first_options'  => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Comfirmer le Password'],
+                    'first_options'  => ['label' => 'Mot de passe'],
+                    'second_options' => ['label' => 'Confirmer le mot de passe'],
                 ])
-                ->add('Followers', TextType::class, ['label' => "Nombre d'abonnés"])
-                ->add('isMature', CheckboxType::class, ['label' => 'Public 18+',
-                    'required' => false])
-                ->add('idStreamer', TextType::class,['label' => 'ID twitch'])
-                ->add('save', SubmitType::class, ['label' => strpos($_SERVER['REQUEST_URI'], 'register/streamer') ? "S'enregistrer" : "Modifier"]);
+                ->add('isMature', CheckboxType::class, ['label' => 'Public 18+', 'required' => false])
+                ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);
         }
     }
 

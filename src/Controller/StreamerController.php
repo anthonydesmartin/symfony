@@ -21,8 +21,11 @@ class StreamerController extends AbstractController
     #[Route('/streamer', name: 'app_streamer')]
     public function index(): Response
     {
+        $pp = $this->getUser()->getProfilePicture();
+
         return $this->render('streamer/streamer.html.twig', [
             'controller_name' => 'StreamerController',
+            'pp' => $pp,
         ]);
     }
     #[Route('/streamer/profile', name: 'app_streamer_profile')]
