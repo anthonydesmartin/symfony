@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="#" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+        <div class="d-flex align-items-center">
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
+            <div class="dropdown d-flex align-items-center">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+{#                    {{ app.user.username }}#}
+                </a>
+                <img alt="icon" src="icon/daft.png" class="icon-login">
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
+                    {#                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>#}
+
+                </ul>
+
+
+            </div>
+
+        </div>
+    </nav>
+{% endblock %}

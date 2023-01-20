@@ -48,6 +48,7 @@ class StreamerController extends AbstractController
             'missing_info' => $missing_info
         ]);
     }
+
     #[Route('/streamer/profile/edit', name: 'app_streamer_profile_edit')]
     public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
@@ -71,6 +72,7 @@ class StreamerController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
 
 
 }
