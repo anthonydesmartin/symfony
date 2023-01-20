@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'register/company')) {
+        if (strpos($_SERVER['REQUEST_URI'], 'register/company') || strpos($_SERVER['REQUEST_URI'], 'compagny/profile/edit') ) {
             $builder
                 ->add('siret', TextType::class,['label' => 'Siret', 'required' => true])
                 ->add('name', TextType::class,['label' => 'Votre nom', 'required' => true])
@@ -41,7 +41,7 @@ class RegistrationFormType extends AbstractType
                     'second_options' => ['label' => 'Comfirmer le Password'],
                 ])
                 ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);
-        } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer')) {
+        } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer') || strpos($_SERVER['REQUEST_URI'], 'streamer/profile/edit')) {
             $builder
                 ->add('username', TextType::class,['label' => 'Pseudo', 'required' => true])
                 ->add('mail', EmailType::class, ['label' => 'Mail',
@@ -56,9 +56,10 @@ class RegistrationFormType extends AbstractType
                     'second_options' => ['label' => 'Comfirmer le Password'],
                 ])
                 ->add('Followers', TextType::class, ['label' => "Nombre d'abonnés"])
-                ->add('isMature', CheckboxType::class, ['label' => 'Public 18+'])
+                ->add('isMature', CheckboxType::class, ['label' => 'Public 18+',
+                    'required' => false])
                 ->add('idStreamer', TextType::class,['label' => 'ID twitch'])
-                ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);
+                ->add('save', SubmitType::class, ['label' => strpos($_SERVER['REQUEST_URI'], 'register/streamer') ? "S'enregistrer" : "Modifier"]);
         }
     }
 
