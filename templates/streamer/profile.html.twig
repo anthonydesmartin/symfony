@@ -13,7 +13,7 @@
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                     {{ app.user.username }}
                 </a>
-                <img alt="icon" src="{{ asset('icon/daft.png') }}" class="icon-login">
+                <img alt="icon" src="{{ pp }}" class="icon-login">
                 <ul class="dropdown-menu dropdown-menu-lg-end">
                     <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
                 </ul>
@@ -26,7 +26,7 @@
         <div class="col-12">
             <ul class="list-group">
                 <li class="list-group-item">Pseudo : {{ app.user.username }}</li>
-                <li class="list-group-item">Streamer ID : {{ app.user.idStreamer }}</li>
+                <li class="list-group-item">Followers : {{ app.user.followers }}</li>
                 <li class="list-group-item">Email :
                     {% if app.user.mail %}
                         {{ app.user.mail }}
