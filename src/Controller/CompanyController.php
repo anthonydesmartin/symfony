@@ -15,4 +15,22 @@ class CompanyController extends AbstractController
             'controller_name' => 'CompanyController',
         ]);
     }
+
+    #[Route('/company/profile', name: 'app_company_profile')]
+    public function profile(): Response
+    {
+        return $this->render('company/profile.html.twig', [
+            'controller_name' => 'profile',
+        ]);
+    }
+
+    #[Route('/company/search', name: 'app_company_search')]
+    public function search(): Response
+    {
+        return $this->render('search_page/search_page.html.twig', [
+            'controller_name' => 'search',
+        ]);
+    }
+
+
 }

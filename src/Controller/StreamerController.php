@@ -22,4 +22,12 @@ class StreamerController extends AbstractController
             'controller_name' => 'Profile',
         ]);
     }
+
+    #[Route('/search_page', name: 'app_search')]
+    public function search(): Response
+    {
+        return $this->render('search_page/search_page', [
+            'controller_name' => 'search',
+        ]);
+    }
 }
