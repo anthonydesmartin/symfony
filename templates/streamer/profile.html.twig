@@ -1,7 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Votre profile{% endblock %}
 
 {% block body %}
-    <div>TEST</div>
+    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="#" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+        <div class="d-flex align-items-center">
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
+            <div class="dropdown d-flex align-items-center">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    {{ app.user.username }}
+                </a>
+                <img alt="icon" src="{{ asset('icon/Daft.png') }}" class="icon-login">
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1 class="">Votre profil {{ app.user.username }} : </h1>
+        <div class="col-12">
+            <ul class="list-group">
+                <li class="list-group-item">Pseudo : {{ app.user.username }}</li>
+                <li class="list-group-item">Streamer ID : {{ app.user.idStreamer }}</li>
+                <li class="list-group-item">Email :
+                    {% if app.user.mail %}
+                        {{ app.user.mail }}
+                    {% else %}
+                        Non renseigné !
+                    {% endif %}
+                </li>
+
+                <li class="list-group-item"> Siret :
+                    {% if app.user.siret %}
+                        {{ app.user.siret }}
+                    {% else %}
+                        Non renseigné !
+                    {% endif %}
+                </li>
+                {% if app.user.isMature %}
+                    <li class="list-group-item">Public : 18+</li>
+                {% else %}
+                    <li class="list-group-item">Public : Tous public</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        {% if missing_info %}
+            <div class="my-2 d-flex align-items-center text h4">Il vous manque les informations suivante pour pourvoir génerer un contrat:</div>
+            <ul class="list-group">
+                {% for info in missing_info %}
+                    <li class="list-group-item d-flex align-items-center"><ion-icon name="warning-outline" class="me-2"></ion-icon>{{ info }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ path('app_streamer_profile_edit') }}" class="btn btn-warning mt-4">Compléter mon profil</a>
+        {% else %}
+            <a href="{{ path('app_streamer_profile_edit') }}" class="btn btn-primary mt-4">Modifier mon profil</a>
+            <div class="d-flex align-items-center h4 mt-3"><ion-icon name="checkmark-circle-outline" class="text-success"></ion-icon>Génération de contrat possible!</div>
+        {% endif %}
+    </div>
+
+
+
+
+    <footer id="sticky-footer" class="flex-shrink-0 py-4">
+        <div class="container text-center">
+            <small>Copyright &copy; PartnerPact</small>
+        </div>
+    </footer>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% endblock %}
+
