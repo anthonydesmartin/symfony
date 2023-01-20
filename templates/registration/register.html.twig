@@ -3,6 +3,13 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
-    {{ form(registrationForm) }}
+    <main class="d-flex flex-column">
+        <nav class="navbar navbar-light justify-content-center border-bottom text-center shadow p-3 mb-5">
+            <a class="navbar-brand" href="home.html.twig" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+        </nav>
+        <div class="container bg-white rounded-4 mt-5">
+            <h1>Créer un compte</h1>
+            <div class="offset-3 col-6 align-items-center">{{ form(registrationForm) }}</div>
+        </div>
+    </main>
 {% endblock %}

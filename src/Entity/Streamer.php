@@ -71,6 +71,9 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Message::class)]
     private Collection $messages;
 
+    #[ORM\Column(length: 255)]
+    private ?string $profile_picture = null;
+
     public function __construct()
     {
         $this->streamThis = new ArrayCollection();
@@ -425,6 +428,18 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
                 $message->setStreamer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profile_picture;
+    }
+
+    public function setProfilePicture(string $profile_picture): self
+    {
+        $this->profile_picture = $profile_picture;
 
         return $this;
     }
