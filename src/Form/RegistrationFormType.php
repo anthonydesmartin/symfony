@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'register/company') || strpos($_SERVER['REQUEST_URI'], 'compagny/profile/edit') ) {
+        if (strpos($_SERVER['REQUEST_URI'], 'register/company') || strpos($_SERVER['REQUEST_URI'], 'company/profile/edit') ) {
             $builder
                 ->add('siret', TextType::class,['label' => 'Siret', 'required' => true])
                 ->add('name', TextType::class,['label' => 'Votre nom', 'required' => true])

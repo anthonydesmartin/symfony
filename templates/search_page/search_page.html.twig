@@ -11,18 +11,78 @@
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
             <div class="dropdown d-flex align-items-center">
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-{#                    {{ app.user.username }}#}
+                    {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                        {{ app.user.name }}
+                    {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                        {{ app.user.username }}
+                    {% endif %}
                 </a>
-                <img alt="icon" src="icon/daft.png" class="icon-login">
-                <ul class="dropdown-menu dropdown-menu-lg-end">
-                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                    {#                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>#}
-
-                </ul>
-
-
+                <img alt="icon" src="{{ asset('icon/daft.png') }}" class="icon-login">
+                {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                    <ul class="dropdown-menu dropdown-menu-lg-end">
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                    </ul>
+                {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                    <ul class="dropdown-menu dropdown-menu-lg-end">
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                    </ul>
+                {% endif %}
             </div>
-
         </div>
     </nav>
+    <div class="container-fluid mh-100">
+        <div class="w-100 h-100 d-flex flex-column">
+            {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                <h1>Les Streamers</h1>
+            {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                <h1>Les Entreprises</h1>
+            {% endif %}
+            <div class="container-fluid row rounded-4 p-0 m-0">
+                <div class="bg-black col-3" id="filter">
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                    <h1>Les Entreprises</h1>
+                </div>
+                <div class="bg-danger col container" id="offers">
+                    <div class="row gap-3 justify-content-center mt-4">
+                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                            {% for streamer in streamers %}
+                                <div class="card col-3" style="width: 18rem;">
+                                    <img src="{{ asset('img/company.png') }}"  class="card-img-top mt-3">
+                                    <div class="card-body">
+                                        <div class="col"><p>{{ streamer.username }}</p></div>
+                                        <a href="{{ path('app_show_streamer', { id: streamer.id }) }}" class="btn btn-success">Voir le streamer</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                            {% for company in companies %}
+                                <div class="card col-3" style="width: 18rem;">
+                                    <img src="{{ asset('img/company.png') }}"  class="card-img-top mt-3">
+                                    <div class="card-body">
+                                        <div class="col"><p>{{ company.name }}</p></div>
+                                        <a href="{{ path('app_show_company', { id: company.id }) }}" class="btn btn-success">Voir l'entreprise</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% endblock %}

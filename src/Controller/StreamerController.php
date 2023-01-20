@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\Streamer;
 use App\Form\RegistrationFormType;
 use App\Controller\RegistrationController;
+use App\Repository\CompanyRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +51,8 @@ class StreamerController extends AbstractController
         ]);
     }
 
+
+
     #[Route('/streamer/profile/edit', name: 'app_streamer_profile_edit')]
     public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
@@ -72,7 +76,19 @@ class StreamerController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
-
-
-
+    #[Route('/streamer/search', name: 'app_streamer_search')]
+    public function search(CompanyRepository $repository): Response
+    {
+        $companies = $repository->findAll();
+        return $this->render('search_page/search_page.html.twig', [
+            'companies' => $companies
+        ]);
+    }
+    #[Route('/streamer/search/profile/{id}', name: 'app_show_company')]
+    public function show_profile(Company $company): Response
+    {
+        return $this->render('search_page/show_profile.html.twig', [
+            'company' => $company
+        ]);
+    }
 }

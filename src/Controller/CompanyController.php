@@ -2,9 +2,18 @@
 
 namespace App\Controller;
 
+
+use App\Entity\Streamer;
+use App\Form\RegistrationFormType;
+use App\Security\StreamerAuthenticator;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\StreamerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class CompanyController extends AbstractController
 {
@@ -19,16 +28,68 @@ class CompanyController extends AbstractController
     #[Route('/company/profile', name: 'app_company_profile')]
     public function profile(): Response
     {
+        $companyinfo = $this->getUser();
+        $companyinfo = [
+            'Name' => $companyinfo->getName(),
+            'Mail' => $companyinfo->getMail(),
+            'Siret' => $companyinfo->getSiret(),
+            'Head_Office' => $companyinfo->getHeadOffice(),
+            'Register' => $companyinfo->getRegister()
+        ];
+        $missing_info = [];
+
+
+        foreach ($companyinfo as $key => $value) {
+            if ($value === null) {
+                $missing_info[] = $key;
+            }
+        }
+
         return $this->render('company/profile.html.twig', [
             'controller_name' => 'profile',
+            'missing_info' => $missing_info
+        ]);
+    }
+
+    #[Route('/company/profile/edit', name: 'app_company_profile_edit')]
+    public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+        $company = $this->getUser();
+        $form = $this->createForm(RegistrationFormType::class, $company);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $company->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $company,
+                    $form->get('password')->getData()
+                )
+            );
+            $entityManager->persist($company);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_company_profile');
+        }
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
         ]);
     }
 
     #[Route('/company/search', name: 'app_company_search')]
-    public function search(): Response
+    public function search(StreamerRepository $repository): Response
     {
+
+        $streamers = $repository->findAll();
         return $this->render('search_page/search_page.html.twig', [
-            'controller_name' => 'search',
+            'streamers' => $streamers
+        ]);
+    }
+
+    #[Route('/company/search/profile/{id}', name: 'app_show_streamer')]
+    public function show_profile(Streamer $streamer): Response
+    {
+        return $this->render('search_page/show_profile.html.twig', [
+            'streamer' => $streamer
         ]);
     }
 

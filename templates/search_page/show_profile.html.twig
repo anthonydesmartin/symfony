@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+        {% block title %}{% endblock %}
+
+        {% block body %}
+            <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
+                <a class="navbar-brand" href="#" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+                <div class="d-flex align-items-center">
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
+                    <div class="dropdown d-flex align-items-center">
+                        <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                                {{ app.user.name }}
+                            {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                                {{ app.user.username }}
+                            {% endif %}
+                        </a>
+                        <img alt="icon" src="{{ asset('icon/daft.png') }}" class="icon-login">
+                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                            <ul class="dropdown-menu dropdown-menu-lg-end">
+                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
+                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                            </ul>
+                        {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                            <ul class="dropdown-menu dropdown-menu-lg-end">
+                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
+                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if app.user.roles[0] == "ROLE_STREAMER" %}
+                        {{ dump(company) }}
+                    {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
+                        {{ dump(streamer) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endblock %}
