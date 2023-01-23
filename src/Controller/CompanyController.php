@@ -34,7 +34,8 @@ class CompanyController extends AbstractController
             'Mail' => $companyinfo->getMail(),
             'Siret' => $companyinfo->getSiret(),
             'Head_Office' => $companyinfo->getHeadOffice(),
-            'Register' => $companyinfo->getRegister()
+            'Register' => $companyinfo->getRegister(),
+            'Description' => $companyinfo->getDescription()
         ];
         $missing_info = [];
 
@@ -88,8 +89,34 @@ class CompanyController extends AbstractController
     #[Route('/company/search/profile/{id}', name: 'app_show_streamer')]
     public function show_profile(Streamer $streamer): Response
     {
+        $company = $this->getUser();
+        $missing_info_company = false;
+        $missing_info_streamer = false;
+        $streamer_info = [
+            'Mail' => $streamer->getMail(),
+            'Siret' => $streamer->getSiret(),
+        ];
+        $company_info = [
+            'Mail' => $company->getMail(),
+            'head' => $company->getHeadOffice(),
+            'register' => $company->getRegister(),
+        ];
+
+        foreach ($company_info as $key => $value) {
+            if ($value === null) {
+                $missing_info_company = true;
+            }
+        }
+        foreach ($streamer_info as $key => $value) {
+            if ($value === null) {
+                $missing_info_streamer = true;
+            }
+        }
         return $this->render('search_page/show_profile.html.twig', [
-            'streamer' => $streamer
+            'streamer' => $streamer,
+            'missing_info_company' => $missing_info_company,
+            'missing_info_streamer' => $missing_info_streamer,
+            'profile_picture' => $streamer->getProfilePicture()
         ]);
     }
 

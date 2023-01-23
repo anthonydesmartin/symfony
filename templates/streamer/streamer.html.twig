@@ -8,7 +8,11 @@
         <div class="d-flex align-items-center">
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
+            {% if app.user.roles[0] == 'ROLE_STREAMER' %}
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_contract') }}">Mes Contrats</a>
+            {% elseif app.user.roles[0] == 'ROLE_COMPANY' %}
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contract') }}">Mes Contrats</a>
+            {% endif %}
             <div class="dropdown d-flex align-items-center">
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                     {{ app.user.username }}

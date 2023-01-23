@@ -17,13 +17,15 @@
                         {{ app.user.username }}
                     {% endif %}
                 </a>
-                <img alt="icon" src="{{ asset('icon/daft.png') }}" class="icon-login">
+
                 {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                    <img alt="icon" src="{{ asset('img/company.png') }}" class="icon-login">
                     <ul class="dropdown-menu dropdown-menu-lg-end">
                         <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
                         <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
                     </ul>
                 {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                    <img alt="icon" src="{{ app.user.profilePicture }}" class="icon-login">
                     <ul class="dropdown-menu dropdown-menu-lg-end">
                         <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
                         <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
@@ -59,7 +61,7 @@
                         {% if app.user.roles[0] == "ROLE_COMPANY" %}
                             {% for streamer in streamers %}
                                 <div class="card col-3" style="width: 18rem;">
-                                    <img src="{{ asset('img/company.png') }}"  class="card-img-top mt-3">
+                                    <img src="{{ streamer.profilePicture }}"  class="card-img-top mt-3">
                                     <div class="card-body">
                                         <div class="col"><p>{{ streamer.username }}</p></div>
                                         <a href="{{ path('app_show_streamer', { id: streamer.id }) }}" class="btn btn-success">Voir le streamer</a>
