@@ -5,19 +5,25 @@
 {% block body %}
     <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
 
-        <a class="navbar-brand" href="#" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+        <a class="navbar-brand" href="{{ path('home_page') }}"><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         <div class="d-flex align-items-center">
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_offers') }}">Mes offres</a>
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contract') }}">Mes contrats</a>
             <div class="dropdown d-flex align-items-center">
-                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
+                   data-bs-display="static" aria-expanded="false">
                     {{ app.user.name }}
                 </a>
                 <img alt="icon" src="icon/daft.png" class="icon-login">
                 <ul class="dropdown-menu dropdown-menu-lg-end">
-                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                    <li><a class="dropdown-item d-flex align-items-center" href="">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon
+                            profil
+                            <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                        </a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                            <ion-icon
+                                    name="log-out-outline" class="ms-2"></ion-icon>
+                        </a></li>
                 </ul>
 
             </div>
@@ -42,7 +48,6 @@
                     <h2>Offres qui pourrait vous intéresser :</h2>
 
 
-
                     <ul>
                         <li><a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Yuzufei</a></li>
                         <li><a class="offer_contract mx-4 fs-4 fw-bolder" href="#">Pawa_Chan</a></li>
@@ -50,7 +55,8 @@
                     </ul>
                 </div>
                 <div class="mt-auto mb-5">
-                    <a type="button" class="btn btn-primary col fs-2 fw-bolder" href="{{ path('app_company_search') }}">Rechercher un Streamer</a>
+                    <a type="button" class="btn btn-primary col fs-2 fw-bolder" href="{{ path('app_company_search') }}">Rechercher
+                        un Streamer</a>
                 </div>
 
             </div>

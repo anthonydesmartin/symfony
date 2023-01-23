@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Form\RegistrationFormType;
 use App\Repository\CompanyRepository;
 use App\Repository\ContractsRepository;
+use App\Repository\ProposalRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -137,11 +138,14 @@ class StreamerController extends AbstractController
         ]);
     }
     #[Route('/streamer/contract', name: 'app_streamer_contract')]
-    public function contract(ContractsRepository $contracts): Response
+    public function contract(ContractsRepository $contractsRepo): Response
     {
-        $contracts = $contracts->fi;
+        $contracts = $contractsRepo->findBy(['streamer' => $this->getUser()]);
+        foreach ($contracts as $contract) {
+            $contract->getCompany()->getSiret();
+        }
         return $this->render('contract/contract.html.twig', [
-            'contracts' => $this->getUser()->getStreamerContract()
+            'contracts' => $contracts,
         ]);
     }
 
