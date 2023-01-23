@@ -93,7 +93,7 @@ class StreamerController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'edit_title' => 'Modifier mon profil',
+            'title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
         ]);
     }

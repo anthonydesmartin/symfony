@@ -74,6 +74,7 @@ class CompanyController extends AbstractController
             return $this->redirectToRoute('app_company_profile');
         }
         return $this->render('registration/register.html.twig', [
+            'title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
         ]);
     }

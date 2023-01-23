@@ -117,6 +117,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
+            'title' => 'Créer un compte',
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -165,6 +166,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
+            'title' => 'Créer un compte',
             'registrationForm' => $form->createView(),
         ]);
     }

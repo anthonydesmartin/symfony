@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-    {% block nav %}<nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
-        <a class="navbar-brand" href="{{ path('home_page') }}" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+{% block nav %}
+    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="{{ path('home_page') }}"><img alt="Logo" src="/img/logo/logo_small.png"
+                                                                    class="pull-left w-50"></a>
         <div class="d-flex align-items-center">
             {% if app.user.roles[0] == "ROLE_STREAMER" %}
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_offers') }}">Mes offres</a>
@@ -25,7 +28,8 @@
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contract') }}">Mes contrats</a>
             {% endif %}
             <div class="dropdown d-flex align-items-center">
-                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
+                   data-bs-display="static" aria-expanded="false">
                     {% if app.user.roles[0] == "ROLE_COMPANY" %}
                         {{ app.user.name }}
                     {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
@@ -36,19 +40,33 @@
                 {% if app.user.roles[0] == "ROLE_COMPANY" %}
                     <img alt="icon" src="{{ asset('img/company.png') }}" class="icon-login">
                     <ul class="dropdown-menu dropdown-menu-lg-end">
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon
+                                profil
+                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
+                            </a></li>
                     </ul>
                 {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
                     <img alt="icon" src="{{ app.user.profilePicture }}" class="icon-login">
                     <ul class="dropdown-menu dropdown-menu-lg-end">
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center"
+                               href="{{ path('app_streamer_profile') }}">Mon profil
+                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
+                            </a></li>
                     </ul>
                 {% endif %}
             </div>
         </div>
-        </nav>{% endblock %}
-        {% block body %}{% endblock %}
-    </body>
+    </nav>
+{% endblock %}
+{% block body %}{% endblock %}
+    <footer class="flex-shrink-0 py-4 text-white-50">
+        <div class="text-center"><small>Copyright &copy; PartnerPact</small></div>
+    </footer>
+</body>
 </html>
