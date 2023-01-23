@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profile{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1>Mes offres</h1>
+        <div class="row">
+            {% for proposal in proposals %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ proposal.company.name }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-text">Description</h4>
+                            <p class="card-text">{{ proposal.description }}</p>
+                            <h4 class="card-text">Format</h4>
+                            <p class="card-text">{{ proposal.format }}</p>
+                        </div>
+                        <div class="card-footer">
+                            {% if proposal.hasProposalStatus.id == 1 %}
+                                <p class="card-text text-warning">{{ proposal.hasProposalStatus.name }}</p>
+                                <a class="card-link link-success text-decoration-none"
+                                   href="{{ path('app_streamer_offer_accept', {'id':
+                                       proposal.id}) }}">Accepter</a>
+                                <a class="card-link link-danger text-decoration-none"
+                                   href="{{ path('app_streamer_offer_reject', {'id':
+                                       proposal.id}) }}">Refuser</a>
+                            {% endif %}
+                            {% if proposal.hasProposalStatus.id == 2 %}
+                                <p class="card-text text-success">{{ proposal.hasProposalStatus.name }}</p>
+                            {% endif %}
+                            {% if proposal.hasProposalStatus.id == 3 %}
+                                <p class="card-text text-danger">{{ proposal.hasProposalStatus.name }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}
