@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
             return $response->toArray()['data'][0];
         }
 
-        function getStreamerTwitchFollowers($form, $client,$id)
+        function getStreamerTwitchFollowers($form, $client, $id)
         {
             clearHeaders();
             $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';

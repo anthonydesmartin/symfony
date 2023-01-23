@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +24,7 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'register/company')) {
+        if (strpos($_SERVER['REQUEST_URI'], 'register/company') || strpos($_SERVER['REQUEST_URI'], 'company/profile/edit')) {
             $builder
                 ->add('siret', TextType::class,['label' => 'Siret', 'required' => true])
                 ->add('name', TextType::class,['label' => 'Votre nom', 'required' => true])
@@ -31,17 +32,19 @@ class RegistrationFormType extends AbstractType
                 ->add('register', TextType::class,['label' => 'Register', 'required' => true])
                 ->add('mail', EmailType::class, ['label' => 'Mail',
                     'required' => true])
+                ->add('description', TextareaType::class, ['label' => 'Description',
+                    'required' => false])
 
                 ->add('password', RepeatedType::class, [
                     'type' => PasswordType::class,
                     'invalid_message' => 'The password fields must match.',
                     'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
-                    'first_options'  => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Comfirmer le Password'],
+                    'first_options'  => ['label' => 'Mot de passe'],
+                    'second_options' => ['label' => 'Confirmer le mot de passe'],
                 ])
                 ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);
-        } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer')) {
+        } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer') || strpos($_SERVER['REQUEST_URI'], 'streamer/profile/edit')) {
             $builder
                 ->add('username', TextType::class,['label' => 'Nom d’utilisateur', 'required' => true, 'attr' => ['placeholder' => 'Nom d’utilisateur utiliser sur la plateforme de streaming']])
                 ->add('mail', EmailType::class, ['label' => 'Mail',
