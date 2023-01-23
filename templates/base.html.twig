@@ -22,10 +22,10 @@
         <div class="d-flex align-items-center">
             {% if app.user.roles[0] == "ROLE_STREAMER" %}
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_offers') }}">Mes offres</a>
-                <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_contract') }}">Mes contrats</a>
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_contracts') }}">Mes contrats</a>
             {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_requests') }}">Mes demandes</a>
-                <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contract') }}">Mes contrats</a>
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contracts') }}">Mes contrats</a>
             {% endif %}
             <div class="dropdown d-flex align-items-center">
                 <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
