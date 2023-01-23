@@ -8,7 +8,11 @@
             <a class="navbar-brand" href="home.html.twig" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         </nav>
         <div class="container bg-white rounded-4 mt-5">
-            <h1>Créer un compte</h1>
+            {% if edit_title == "Modifier mon profil" %}
+                <h1 class="text-center mt-5 mb-3">{{ edit_title }}</h1>
+            {% else %}
+                <h1 class="text-center mt-5">Créer un compte</h1>
+            {% endif %}
             <div class="offset-3 col-6 align-items-center">{{ form(registrationForm) }}</div>
         </div>
     </main>

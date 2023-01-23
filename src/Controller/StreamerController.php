@@ -4,11 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Contract;
+use App\Entity\ContractStatus;
+use App\Entity\Proposal;
+use App\Entity\ProposalStatus;
 use App\Entity\Streamer;
+use App\Form\ContractType;
+use App\Form\ProposalType;
 use App\Form\RegistrationFormType;
 use App\Controller\RegistrationController;
 use App\Repository\CompanyRepository;
 use App\Repository\ContractsRepository;
+use App\Repository\ProposalRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,6 +86,7 @@ class StreamerController extends AbstractController
             return $this->redirectToRoute('app_streamer_profile');
         }
         return $this->render('registration/register.html.twig', [
+            'edit_title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -124,12 +131,80 @@ class StreamerController extends AbstractController
         ]);
     }
     #[Route('/streamer/contract', name: 'app_streamer_contract')]
-    public function contract(ContractsRepository $contracts): Response
+    public function contract(ContractsRepository $contractsRepo, CompanyRepository $companyRepo): Response
     {
-        $contracts = $contracts->fi;
+        $contracts = $contractsRepo->findBy(['streamer' => $this->getUser()]);
+        foreach ($contracts as $contract) {
+            $contract->getCompany()->getSiret();
+        }
         return $this->render('contract/contract.html.twig', [
-            'contracts' => $this->getUser()->getStreamerContract()
+            'contracts' => $contracts
         ]);
     }
+
+    #[Route('/streamer/offers', name: 'app_streamer_show_proposal')]
+    public function show_proposal(ProposalRepository $proposalRepo): Response
+    {
+        $streamer = $this->getUser();
+        $proposals = $proposalRepo->findBy(['streamer' => $streamer]);
+        return $this->render('offers/offers.html.twig', [
+            'proposals' => $proposals
+        ]);
+    }
+    #[Route('/streamer/search/profile/{id}/proposal', name: 'app_streamer_make_proposal')]
+    public function make_proposal(Company $company, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $streamer = $this->getUser();
+        $proposal = new Proposal();
+        $proposal->setStreamer($streamer);
+        $proposal->setCompany($company);
+        $form = $this->createForm(ProposalType::class, $proposal);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $proposal_status = new ProposalStatus();
+            $proposal->setStreamer($streamer)->setCompany($company);
+            $proposal_status->addProposal($proposal);
+            $proposal->setHasProposalStatus($proposal_status);
+            $proposal_status->setName('En attente de validation');
+            $proposal->setDescription($form->get('description')->getData());
+            $proposal->setFormat($form->get('format')->getData());
+            $entityManager->persist($proposal);
+            $entityManager->persist($proposal_status);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_streamer_show_proposal');
+        }
+        return $this->render('offers/make_offers.html.twig', [
+            'proposalForm' => $form->createView(),
+        ]);
+    }
+
+//    #[Route('/streamer/search/profile/{id}/make/relation', name: 'app_streamer_make_relation')]
+//    public function make_contract(Company $company, Request $request, EntityManagerInterface $entityManager): Response
+//    {
+//        $contract = new Contract();
+//        $status = new ContractStatus();
+//        $status->setContract($contract);
+//        $status->setName('En attente');
+//        $form = $this->createForm(ContractType::class, $contract);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $contract->setStreamer($this->getUser());
+//            $contract->setCompany($company);
+//            $contract->setStartDate(new \DateTime('now'));
+//
+//            $entityManager->persist($contract);
+//            $entityManager->persist($status);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_streamer_contract');
+//        }
+//
+//        return $this->render('contract/make_contract.html.twig', [
+//            'contract_form' => $form->createView(),
+//            'company' => $company
+//        ]);
+//    }
 
 }
