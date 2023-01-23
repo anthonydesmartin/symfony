@@ -3,41 +3,6 @@
         {% block title %}{% endblock %}
 
         {% block body %}
-            <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
-                <a class="navbar-brand" href="{{ path('home_page') }}" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
-                <div class="d-flex align-items-center">
-                    {% if app.user.roles[0] == "ROLE_STREAMER" %}
-                        <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_offers') }}">Mes offres</a>
-                        <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_contract') }}">Mes contrats</a>
-                    {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
-                        <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_offers') }}">Mes offres</a>
-                        <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contract') }}">Mes contrats</a>
-                    {% endif %}
-                    <div class="dropdown d-flex align-items-center">
-                        <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                            {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                                {{ app.user.name }}
-                            {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                                {{ app.user.username }}
-                            {% endif %}
-                        </a>
-
-                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                            <img alt="icon" src="{{ asset('img/company.png') }}" class="icon-login">
-                            <ul class="dropdown-menu dropdown-menu-lg-end">
-                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
-                            </ul>
-                        {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                            <img alt="icon" src="{{ app.user.profilePicture }}" class="icon-login">
-                            <ul class="dropdown-menu dropdown-menu-lg-end">
-                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                                <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
-                            </ul>
-                        {% endif %}
-                    </div>
-                </div>
-            </nav>
 
         <div class="container">
             <div class="row ">
