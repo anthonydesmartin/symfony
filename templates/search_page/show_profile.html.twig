@@ -51,7 +51,7 @@
                                             <span class="badge rounded-pill bg-info text-dark">Compte vérifié</span>
                                             <p class="d-flex align-items-center"><ion-icon class="me-1" name="shield-checkmark-outline"></ion-icon>Vous pouvez générer un contrat avec cette entreprise</p>
                                             <p class="card-text"><small class="text-muted">{{ company.description }}</small></p>
-                                            <a href="" class="btn btn-primary">Générer un contrat</a>
+                                            <a href="{{ path('app_streamer_make_proposal', {id: company.id}) }}" class="btn btn-primary">Faire une offre</a>
                                         {% else %}
                                             <span class="badge rounded-pill bg-info text-dark">Compte non vérifié</span>
                                         {% endif %}
