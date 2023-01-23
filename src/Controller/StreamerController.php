@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Company;
+use App\Entity\Contract;
 use App\Entity\Streamer;
 use App\Form\RegistrationFormType;
 use App\Controller\RegistrationController;
 use App\Repository\CompanyRepository;
+use App\Repository\ContractsRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,8 +94,42 @@ class StreamerController extends AbstractController
     #[Route('/streamer/search/profile/{id}', name: 'app_show_company')]
     public function show_profile(Company $company): Response
     {
+        $missing_info_company = [];
+        $missing_info_streamer = [];
+        $streamer = $this->getUser();
+        $streamer_info = [
+            'Mail' => $streamer->getMail(),
+            'Siret' => $streamer->getSiret(),
+        ];
+        $company_info = [
+            'Mail' => $company->getMail(),
+            'head' => $company->getHeadOffice(),
+            'register' => $company->getRegister(),
+        ];
+
+        foreach ($company_info as $key => $value) {
+            if ($value === null) {
+                $missing_info_company[] = $key;
+            }
+        }
+        foreach ($streamer_info as $key => $value) {
+            if ($value === null) {
+                $missing_info_streamer[] = $key;
+            }
+        }
         return $this->render('search_page/show_profile.html.twig', [
-            'company' => $company
+            'company' => $company,
+            'missing_info_company' => $missing_info_company,
+            'missing_info_streamer' => $missing_info_streamer
         ]);
     }
+    #[Route('/streamer/contract', name: 'app_streamer_contract')]
+    public function contract(ContractsRepository $contracts): Response
+    {
+        $contracts = $contracts->fi;
+        return $this->render('contract/contract.html.twig', [
+            'contracts' => $this->getUser()->getStreamerContract()
+        ]);
+    }
+
 }
