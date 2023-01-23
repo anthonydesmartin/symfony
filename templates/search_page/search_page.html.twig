@@ -17,7 +17,7 @@
                         {{ app.user.username }}
                     {% endif %}
                 </a>
-                <img alt="icon" src="{{ asset('icon/daft.png') }}" class="icon-login">
+                <img alt="icon" src="{{ pp }}" class="icon-login">
                 {% if app.user.roles[0] == "ROLE_COMPANY" %}
                     <ul class="dropdown-menu dropdown-menu-lg-end">
                         <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
