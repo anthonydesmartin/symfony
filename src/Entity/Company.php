@@ -55,11 +55,6 @@ class Company implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'hasRepresentative', targetEntity: Representative::class)]
     private Collection $representatives;
 
-    #[ORM\OneToMany(mappedBy: 'Company', targetEntity: Relation::class)]
-    private Collection $relations;
-
-    #[ORM\OneToMany(mappedBy: 'Company', targetEntity: Message::class)]
-    private Collection $messages;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -70,8 +65,6 @@ class Company implements UserInterface, PasswordAuthenticatedUserInterface
         $this->streamers = new ArrayCollection();
         $this->makeProposal = new ArrayCollection();
         $this->representatives = new ArrayCollection();
-        $this->relations = new ArrayCollection();
-        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -310,65 +303,7 @@ class Company implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /**
-     * @return Collection<int, Relation>
-     */
-    public function getRelations(): Collection
-    {
-        return $this->relations;
-    }
 
-    public function addRelation(Relation $relation): self
-    {
-        if (!$this->relations->contains($relation)) {
-            $this->relations->add($relation);
-            $relation->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRelation(Relation $relation): self
-    {
-        if ($this->relations->removeElement($relation)) {
-            // set the owning side to null (unless already changed)
-            if ($relation->getCompany() === $this) {
-                $relation->setCompany(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages->add($message);
-            $message->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getCompany() === $this) {
-                $message->setCompany(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {

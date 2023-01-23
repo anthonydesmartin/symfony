@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Company;
 use App\Entity\Proposal;
 use App\Entity\ProposalStatus;
+use App\Entity\Streamer;
 use App\Form\ProposalType;
 use App\Repository\ProposalRepository;
 use App\Repository\ProposalStatusRepository;
@@ -65,10 +66,10 @@ class ProposalController extends AbstractController
         return $this->redirectToRoute('app_streamer_offers');
     }
 
-    #[Route('/company/search/profile/{id}/proposal', name: 'app_company_make_proposal')]
-    public function make_proposal(Company $company, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/company/search/profile/{id}/proposal', name: 'make_proposal')]
+    public function make_proposal(Streamer $streamer, Request $request, EntityManagerInterface $entityManager, ProposalStatusRepository $proposalStatusRepo): Response
     {
-        $streamer = $this->getUser();
+        $company = $this->getUser();
         $proposal = new Proposal();
         $proposal->setStreamer($streamer);
         $proposal->setCompany($company);
@@ -76,48 +77,16 @@ class ProposalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $proposal_status = new ProposalStatus();
             $proposal->setStreamer($streamer)->setCompany($company);
-            $proposal_status->addProposal($proposal);
-            $proposal->setHasProposalStatus($proposal_status);
-            $proposal_status->setName('En attente de validation');
+            $proposal->setHasProposalStatus($proposalStatusRepo->find(1));
             $proposal->setDescription($form->get('description')->getData());
             $proposal->setFormat($form->get('format')->getData());
             $entityManager->persist($proposal);
-            $entityManager->persist($proposal_status);
             $entityManager->flush();
-            return $this->redirectToRoute('app_streamer_show_proposal');
+            return $this->redirectToRoute('app_company_requests');
         }
         return $this->render('offers/make_offers.html.twig', [
             'proposalForm' => $form->createView(),
         ]);
     }
-
-//    #[Route('/streamer/search/profile/{id}/make/relation', name: 'app_streamer_make_relation')]
-//    public function make_contract(Company $company, Request $request, EntityManagerInterface $entityManager): Response
-//    {
-//        $contract = new Contract();
-//        $status = new ContractStatus();
-//        $status->setContract($contract);
-//        $status->setName('En attente');
-//        $form = $this->createForm(ContractType::class, $contract);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $contract->setStreamer($this->getUser());
-//            $contract->setCompany($company);
-//            $contract->setStartDate(new \DateTime('now'));
-//
-//            $entityManager->persist($contract);
-//            $entityManager->persist($status);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_streamer_contract');
-//        }
-//
-//        return $this->render('contract/make_contract.html.twig', [
-//            'contract_form' => $form->createView(),
-//            'company' => $company
-//        ]);
-//    }
 }

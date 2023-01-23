@@ -40,6 +40,7 @@
                                         {% if missing_info_streamer == false %}
                                             <span class="badge rounded-pill bg-info text-dark">Compte vérifié</span>
                                             <p class="d-flex align-items-center"><ion-icon class="me-1" name="shield-checkmark-outline"></ion-icon>Vous pouvez générer un contrat avec ce streamer</p>
+                                            <a href="{{ path('make_proposal', {id: streamer.id}) }}" class="btn btn-primary">Faire une offre</a>
                                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                         {% else %}
                                             <span class="badge rounded-pill bg-info text-dark">Compte non vérifié</span>
