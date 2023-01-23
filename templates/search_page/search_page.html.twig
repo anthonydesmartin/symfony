@@ -4,13 +4,14 @@
 
 {% block body %}
     <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
-        <a class="navbar-brand" href="#" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
+        <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         <div class="d-flex align-items-center">
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
             <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
             <div class="dropdown d-flex align-items-center">
-                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
+                   data-bs-display="static" aria-expanded="false">
                     {% if app.user.roles[0] == "ROLE_COMPANY" %}
                         {{ app.user.name }}
                     {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
@@ -21,14 +22,24 @@
                 {% if app.user.roles[0] == "ROLE_COMPANY" %}
                     <img alt="icon" src="{{ asset('img/company.png') }}" class="icon-login">
                     <ul class="dropdown-menu dropdown-menu-lg-end">
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon
+                                profil
+                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
+                            </a></li>
                     </ul>
                 {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
                     <img alt="icon" src="{{ app.user.profilePicture }}" class="icon-login">
                     <ul class="dropdown-menu dropdown-menu-lg-end">
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_streamer_profile') }}">Mon profil<ion-icon name="person-circle-outline" class="ms-2"></ion-icon></a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion<ion-icon name="log-out-outline" class="ms-2"></ion-icon></a></li>
+                        <li><a class="dropdown-item d-flex align-items-center"
+                               href="{{ path('app_streamer_profile') }}">Mon profil
+                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
+                            </a></li>
                     </ul>
                 {% endif %}
             </div>
@@ -37,21 +48,52 @@
     <div class="container-fluid mh-100">
         <div class="w-100 h-100 d-flex flex-column">
             {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                <h1>Les Streamers</h1>
+
             {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
                 <h1>Les Entreprises</h1>
             {% endif %}
             <div class="container-fluid row rounded-4 p-0 m-0">
                 <div class="bg-black col-3" id="filter">
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
+
+                    <h2>Liste des Streamers</h2>
+                    <div class="row form-group">
+                        <label for="username_search" class="col-3 col-from-label text-end">Streamers</label>
+                        <div class="col-6">
+                            <select class="form-control" id="username_search" name="username_search">
+                                <option value="">(Tous les Streamers)</option>
+                                {% for username in usernames %}
+                                    <option>
+                                        {{ username }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                            <div class="row form-group">
+                                <label for="game_search" class="col-3 col-from-label text-end">Jeux</label>
+                                <div class="col-6">
+                                    <select class="form-control" id="game_search" name="game_search">
+                                        <option value="">(Games)</option>
+                                        {% for game in games %}
+                                            <option>
+                                                {{ game }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+                        <button type="submit" class="btn-primary">Rechercher</button>
+                    </div>
+
+
                     <h1>Les Entreprises</h1>
                     <h1>Les Entreprises</h1>
                     <h1>Les Entreprises</h1>
@@ -61,23 +103,24 @@
                         {% if app.user.roles[0] == "ROLE_COMPANY" %}
                             {% for streamer in streamers %}
                                 <div class="card col-3" style="width: 18rem;">
-                                    <img src="{{ streamer.profilePicture }}"  class="card-img-top mt-3">
+                                    <img src="{{ streamer.profilePicture }}" class="card-img-top mt-3">
                                     <div class="card-body">
                                         <div class="col"><p>{{ streamer.username }}</p></div>
-                                        <a href="{{ path('app_show_streamer', { id: streamer.id }) }}" class="btn btn-success">Voir le streamer</a>
+                                        <a href="{{ path('app_show_streamer', { id: streamer.id }) }}"
+                                           class="btn btn-success">Voir le streamer</a>
                                     </div>
                                 </div>
                             {% endfor %}
-                        {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                            {% for company in companies %}
-                                <div class="card col-3" style="width: 18rem;">
-                                    <img src="{{ asset('img/company.png') }}"  class="card-img-top mt-3">
-                                    <div class="card-body">
-                                        <div class="col"><p>{{ company.name }}</p></div>
-                                        <a href="{{ path('app_show_company', { id: company.id }) }}" class="btn btn-success">Voir l'entreprise</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
+
+                            {% if previous >= 0 %}
+                                <a type="button" class="btn btn-primary col-3 fs-2 fw-bolder"
+                                   href="{{ path('app_company_search', {offset: previous} ) }}">Précédent</a>
+                            {% endif %}
+                            {% if next < streamers | length %}
+                                <a type="button" class="btn btn-primary col-3 fs-2 fw-bolder"
+                                   href="{{ path('app_company_search', {offset: next} ) }}">Suivant</a>
+                            {% endif %}
+
                         {% endif %}
                     </div>
                 </div>
@@ -88,3 +131,4 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% endblock %}
+

@@ -30,6 +30,7 @@ class StreamerController extends AbstractController
             'pp' => $pp,
         ]);
     }
+
     #[Route('/streamer/profile', name: 'app_streamer_profile')]
     public function profile(): Response
     {
@@ -83,6 +84,10 @@ class StreamerController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+
+
+
     #[Route('/streamer/search', name: 'app_streamer_search')]
     public function search(CompanyRepository $repository): Response
     {
@@ -131,5 +136,7 @@ class StreamerController extends AbstractController
             'contracts' => $this->getUser()->getStreamerContract()
         ]);
     }
+
+
 
 }

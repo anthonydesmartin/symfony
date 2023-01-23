@@ -5,6 +5,8 @@ namespace App\Controller;
 
 use App\Entity\Streamer;
 use App\Form\RegistrationFormType;
+use App\Repository\CategoriesRepository;
+use App\Repository\CompanyRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\StreamerRepository;
@@ -76,15 +78,31 @@ class CompanyController extends AbstractController
         ]);
     }
 
-    #[Route('/company/search', name: 'app_company_search')]
-    public function search(StreamerRepository $repository): Response
-    {
 
-        $streamers = $repository->findAll();
+
+
+
+    #[Route('/company/search', name: 'app_company_search')]
+    public function getPaginatorStreamer(StreamerRepository $streamerRepository, CategoriesRepository $categoriesRepository, Request $request): Response
+    {
+        $offset= max(0, $request->get('offset', 0));
+        $paginator = $streamerRepository->getPaginatorStreamer($offset);
+        $usernames = $streamerRepository->getListUsername();
+        $games = $categoriesRepository->getListGame();
+
+
         return $this->render('search_page/search_page.html.twig', [
-            'streamers' => $streamers
+            'games' => $games,
+            'usernames'=> $usernames,
+            'streamers' => $paginator,
+            'previous' => $offset - StreamerRepository::STREAMERS_PER_PAGE,
+            'next' => min(count($paginator),$offset + StreamerRepository::STREAMERS_PER_PAGE),
         ]);
     }
+
+
+
+
 
     #[Route('/company/search/profile/{id}', name: 'app_show_streamer')]
     public function show_profile(Streamer $streamer): Response
