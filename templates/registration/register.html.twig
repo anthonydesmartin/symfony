@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
+{% block nav %}{% endblock %}
 
 {% block body %}
     <main class="d-flex flex-column">
@@ -8,8 +9,8 @@
             <a class="navbar-brand" href="home.html.twig" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         </nav>
         <div class="container bg-white rounded-4 mt-5">
-            {% if edit_title == "Modifier mon profil" %}
-                <h1 class="text-center mt-5 mb-3">{{ edit_title }}</h1>
+            {% if title == "Modifier mon profil" %}
+                <h1 class="text-center mt-5 mb-3">{{ title }}</h1>
             {% else %}
                 <h1 class="text-center mt-5">Créer un compte</h1>
             {% endif %}
