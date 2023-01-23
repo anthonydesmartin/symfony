@@ -33,7 +33,7 @@ class StreamerController extends AbstractController
 
         return $this->render('streamer/streamer.html.twig', [
             'controller_name' => 'StreamerController',
-            'pp' => $pp,
+            'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
     #[Route('/streamer/profile', name: 'app_streamer_profile')]
@@ -47,7 +47,7 @@ class StreamerController extends AbstractController
             'Siret' => $streamerinfo->getSiret(),
             'Followers' => $streamerinfo->getFollowers(),
             'Public' => $streamerinfo->isIsMature() ? 'true' : 'false',
-            'StreamerID' => $streamerinfo->getIdStreamer()
+            'StreamerID' => $streamerinfo->getIdStreamer(),
         ];
         $missing_info = [];
 
@@ -60,15 +60,20 @@ class StreamerController extends AbstractController
 
         return $this->render('streamer/profile.html.twig', [
             'missing_info' => $missing_info,
-            'pp' => $pp,
+            'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
 
 
 
     #[Route('/streamer/profile/edit', name: 'app_streamer_profile_edit')]
-    public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        StreamerAuthenticator $authenticator,
+        EntityManagerInterface $entityManager
+    ): Response {
         $streamer = $this->getUser();
         $form = $this->createForm(RegistrationFormType::class, $streamer);
         $form->handleRequest($request);
@@ -83,21 +88,27 @@ class StreamerController extends AbstractController
             );
             $entityManager->persist($streamer);
             $entityManager->flush();
+
             return $this->redirectToRoute('app_streamer_profile');
         }
+
         return $this->render('registration/register.html.twig', [
             'edit_title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
         ]);
     }
+
     #[Route('/streamer/search', name: 'app_streamer_search')]
     public function search(CompanyRepository $repository): Response
     {
         $companies = $repository->findAll();
+
         return $this->render('search_page/search_page.html.twig', [
-            'companies' => $companies
+            'companies' => $companies,
+            'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
+
     #[Route('/streamer/search/profile/{id}', name: 'app_show_company')]
     public function show_profile(Company $company): Response
     {
@@ -126,6 +137,7 @@ class StreamerController extends AbstractController
         }
         return $this->render('search_page/show_profile.html.twig', [
             'company' => $company,
+            'pp' => $this->getUser()->getProfilePicture(),
             'missing_info_company' => $missing_info_company,
             'missing_info_streamer' => $missing_info_streamer
         ]);
@@ -141,70 +153,5 @@ class StreamerController extends AbstractController
             'contracts' => $contracts
         ]);
     }
-
-    #[Route('/streamer/offers', name: 'app_streamer_show_proposal')]
-    public function show_proposal(ProposalRepository $proposalRepo): Response
-    {
-        $streamer = $this->getUser();
-        $proposals = $proposalRepo->findBy(['streamer' => $streamer]);
-        return $this->render('offers/offers.html.twig', [
-            'proposals' => $proposals
-        ]);
-    }
-    #[Route('/streamer/search/profile/{id}/proposal', name: 'app_streamer_make_proposal')]
-    public function make_proposal(Company $company, Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $streamer = $this->getUser();
-        $proposal = new Proposal();
-        $proposal->setStreamer($streamer);
-        $proposal->setCompany($company);
-        $form = $this->createForm(ProposalType::class, $proposal);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $proposal_status = new ProposalStatus();
-            $proposal->setStreamer($streamer)->setCompany($company);
-            $proposal_status->addProposal($proposal);
-            $proposal->setHasProposalStatus($proposal_status);
-            $proposal_status->setName('En attente de validation');
-            $proposal->setDescription($form->get('description')->getData());
-            $proposal->setFormat($form->get('format')->getData());
-            $entityManager->persist($proposal);
-            $entityManager->persist($proposal_status);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_streamer_show_proposal');
-        }
-        return $this->render('offers/make_offers.html.twig', [
-            'proposalForm' => $form->createView(),
-        ]);
-    }
-
-//    #[Route('/streamer/search/profile/{id}/make/relation', name: 'app_streamer_make_relation')]
-//    public function make_contract(Company $company, Request $request, EntityManagerInterface $entityManager): Response
-//    {
-//        $contract = new Contract();
-//        $status = new ContractStatus();
-//        $status->setContract($contract);
-//        $status->setName('En attente');
-//        $form = $this->createForm(ContractType::class, $contract);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $contract->setStreamer($this->getUser());
-//            $contract->setCompany($company);
-//            $contract->setStartDate(new \DateTime('now'));
-//
-//            $entityManager->persist($contract);
-//            $entityManager->persist($status);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_streamer_contract');
-//        }
-//
-//        return $this->render('contract/make_contract.html.twig', [
-//            'contract_form' => $form->createView(),
-//            'company' => $company
-//        ]);
-//    }
 
 }

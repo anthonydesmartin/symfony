@@ -5,6 +5,8 @@ namespace App\Controller;
 
 use App\Entity\Streamer;
 use App\Form\RegistrationFormType;
+use App\Repository\CompanyRepository;
+use App\Repository\ContractsRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\StreamerRepository;
@@ -117,6 +119,18 @@ class CompanyController extends AbstractController
             'missing_info_company' => $missing_info_company,
             'missing_info_streamer' => $missing_info_streamer,
             'profile_picture' => $streamer->getProfilePicture()
+        ]);
+    }
+
+    #[Route('/company/contract', name: 'app_company_contract')]
+    public function contract(ContractsRepository $contractsRepo, CompanyRepository $companyRepo): Response
+    {
+        $contracts = $contractsRepo->findBy(['company' => $this->getUser()]);
+        foreach ($contracts as $contract) {
+            $contract->getStreamer()->getIdStreamer();
+        }
+        return $this->render('contract/contract.html.twig', [
+            'contracts' => $contracts
         ]);
     }
 
