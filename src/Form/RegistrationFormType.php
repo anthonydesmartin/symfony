@@ -28,10 +28,10 @@ class RegistrationFormType extends AbstractType
             $builder
                 ->add('siret', TextType::class,['label' => 'Siret', 'required' => true])
                 ->add('name', TextType::class,['label' => 'Votre nom', 'required' => true])
-                ->add('headOffice', TextType::class,['label' => 'Dirigeant', 'required' => true])
-                ->add('register', TextType::class,['label' => 'Register', 'required' => true])
-                ->add('mail', EmailType::class, ['label' => 'Mail',
-                    'required' => true])
+                ->add('headOffice', TextType::class,['label' => 'Siège social', 'required' => false])
+                ->add('register', TextType::class,['label' => 'Registre', 'required' => false])
+                ->add('mail', EmailType::class, ['label' => 'Adresse e-mail',
+                    'required' => false])
                 ->add('description', TextareaType::class, ['label' => 'Description',
                     'required' => false])
 
@@ -46,9 +46,9 @@ class RegistrationFormType extends AbstractType
                 ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);
         } else if (strpos($_SERVER['REQUEST_URI'], 'register/streamer') || strpos($_SERVER['REQUEST_URI'], 'streamer/profile/edit')) {
             $builder
-                ->add('username', TextType::class,['label' => 'Nom d’utilisateur', 'required' => true, 'attr' => ['placeholder' => 'Nom d’utilisateur utiliser sur la plateforme de streaming']])
+                ->add('username', TextType::class,['label' => 'Nom d\'utilisateur', 'required' => true, 'attr' => ['placeholder' => 'Nom d’utilisateur utiliser sur la plateforme de streaming']])
                 ->add('mail', EmailType::class, ['label' => 'Mail',
-                    'required' => true, 'attr' => ['placeholder' => 'johndoe@email.com']])
+                    'required' => false, 'attr' => ['placeholder' => 'johndoe@email.com']])
                 ->add('siret', TextType::class,['label' => 'SIRET', 'required' => false, 'attr' => ['placeholder' => '78467169500087']])
                 ->add('password', RepeatedType::class, [
                     'type' => PasswordType::class,
@@ -56,7 +56,7 @@ class RegistrationFormType extends AbstractType
                     'options' => ['attr' => ['class' => 'password-field', 'placeholder' => '**************']],
                     'required' => true,
                     'first_options'  => ['label' => 'Mot de passe'],
-                    'second_options' => ['label' => 'Confirmer le mot de passe'],
+                    'second_options' => ['label' => 'Confirmer mot de passe'],
                 ])
                 ->add('isMature', CheckboxType::class, ['label' => 'Public 18+', 'required' => false])
                 ->add('save', SubmitType::class, ['label' => "S'enregistrer"]);

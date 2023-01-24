@@ -3,55 +3,10 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
-        <a class="navbar-brand" href="#"><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
-        <div class="d-flex align-items-center">
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes offres</a>
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes demandes</a>
-            <a class="nav-link mx-4 fs-4 fw-bolder" href="#">Mes contrats</a>
-            <div class="dropdown d-flex align-items-center">
-                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
-                   data-bs-display="static" aria-expanded="false">
-                    {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                        {{ app.user.name }}
-                    {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                        {{ app.user.username }}
-                    {% endif %}
-                </a>
 
-                {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                    <img alt="icon" src="{{ asset('img/company.png') }}" class="icon-login">
-                    <ul class="dropdown-menu dropdown-menu-lg-end">
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon
-                                profil
-                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
-                            </a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
-                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
-                            </a></li>
-                    </ul>
-                {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                    <img alt="icon" src="{{ app.user.profilePicture }}" class="icon-login">
-                    <ul class="dropdown-menu dropdown-menu-lg-end">
-                        <li><a class="dropdown-item d-flex align-items-center"
-                               href="{{ path('app_streamer_profile') }}">Mon profil
-                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
-                            </a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
-                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
-                            </a></li>
-                    </ul>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
     <div class="container-fluid mh-100">
         <div class="w-100 h-100 d-flex flex-column">
-            {% if app.user.roles[0] == "ROLE_COMPANY" %}
 
-            {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                <h1>Les Entreprises</h1>
-            {% endif %}
             <div class="container-fluid row rounded-4 p-0 m-0">
                 <div class="bg-black col-3" id="filter">
 
@@ -100,12 +55,12 @@
                 </div>
                 <div class="bg-danger col container" id="offers">
                     <div class="row gap-3 justify-content-center mt-4">
-                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
                             {% for streamer in streamers %}
                                 <div class="card col-3" style="width: 18rem;">
                                     <img src="{{ streamer.profilePicture }}" class="card-img-top mt-3">
                                     <div class="card-body">
                                         <div class="col"><p>{{ streamer.username }}</p></div>
+
                                         <a href="{{ path('app_show_streamer', { id: streamer.id }) }}"
                                            class="btn btn-success">Voir le streamer</a>
                                     </div>
@@ -122,6 +77,7 @@
                             {% endif %}
 
                         {% endif %}
+
                     </div>
                 </div>
             </div>

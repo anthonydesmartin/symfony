@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profile{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <div class="row">
+            {% for proposal in proposals %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            {% if app.user.roles[0] == "ROLE_STREAMER" %}
+                                <h3 class="card-title">Offre reçu de {{ proposal.company.name }}</h3>
+                            {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
+                                <h3 class="card-title m-1">Offre envoyé à {{ proposal.streamer.username }}</h3>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-text border-bottom">Description</h4>
+                            <p class="card-text">{{ proposal.description }}</p>
+                            <h4 class="card-text border-bottom">Format</h4>
+                            <p class="card-text">{{ proposal.format }}</p>
+                            {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                                <p class="card-text">Status : {{ proposal.hasProposalStatus.name }}</p>
+                                {% if proposal.hasProposalStatus.id == 2 %}
+                                    <a href="{{ path('app_make_contract', {id: proposal.streamer.id }) }}" class="btn btn-success" >Générer un contrat</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            {% if proposal.hasProposalStatus.id == 1 and app.user.roles[0] != "ROLE_COMPANY" %}
+                                <p class="card-text text-warning">{{ proposal.hasProposalStatus.name }}</p>
+                                <a class="card-link link-success text-decoration-none"
+                                   href="{{ path('app_streamer_offer_accept', {'id':
+                                       proposal.id}) }}">Accepter</a>
+                                <a class="card-link link-danger text-decoration-none"
+                                   href="{{ path('app_streamer_offer_reject', {'id':
+                                       proposal.id}) }}">Refuser</a>
+                            {% endif %}
+                            {% if proposal.hasProposalStatus.id == 2 and app.user.roles[0] != "ROLE_COMPANY" %}
+                                <p class="card-text text-success">{{ proposal.hasProposalStatus.name }}</p>
+                            {% endif %}
+                            {% if proposal.hasProposalStatus.id == 3 and app.user.roles[0] != "ROLE_COMPANY" %}
+                                <p class="card-text text-danger">{{ proposal.hasProposalStatus.name }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

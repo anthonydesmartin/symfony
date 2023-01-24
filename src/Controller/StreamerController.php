@@ -4,11 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Contract;
+use App\Entity\ContractStatus;
+use App\Entity\Proposal;
+use App\Entity\ProposalStatus;
 use App\Entity\Streamer;
+use App\Form\ContractType;
+use App\Form\ProposalType;
 use App\Form\RegistrationFormType;
 use App\Controller\RegistrationController;
 use App\Repository\CompanyRepository;
 use App\Repository\ContractsRepository;
+use App\Repository\ProposalRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class StreamerController extends AbstractController
 {
@@ -27,7 +34,7 @@ class StreamerController extends AbstractController
 
         return $this->render('streamer/streamer.html.twig', [
             'controller_name' => 'StreamerController',
-            'pp' => $pp,
+            'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
 
@@ -42,7 +49,7 @@ class StreamerController extends AbstractController
             'Siret' => $streamerinfo->getSiret(),
             'Followers' => $streamerinfo->getFollowers(),
             'Public' => $streamerinfo->isIsMature() ? 'true' : 'false',
-            'StreamerID' => $streamerinfo->getIdStreamer()
+            'StreamerID' => $streamerinfo->getIdStreamer(),
         ];
         $missing_info = [];
 
@@ -55,15 +62,27 @@ class StreamerController extends AbstractController
 
         return $this->render('streamer/profile.html.twig', [
             'missing_info' => $missing_info,
-            'pp' => $pp,
+            'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
 
 
 
     #[Route('/streamer/profile/edit', name: 'app_streamer_profile_edit')]
-    public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        StreamerAuthenticator $authenticator,
+        EntityManagerInterface $entityManager,
+        HttpClientInterface $client
+    ): Response {
+        function clearHeaders(){
+            header_remove('Authorization');
+            header_remove('Client-Id');
+            header_remove('ContentType');
+        }
+
         $streamer = $this->getUser();
         $form = $this->createForm(RegistrationFormType::class, $streamer);
         $form->handleRequest($request);
@@ -80,22 +99,13 @@ class StreamerController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_streamer_profile');
         }
+
         return $this->render('registration/register.html.twig', [
+            'title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
         ]);
     }
 
-
-
-
-    #[Route('/streamer/search', name: 'app_streamer_search')]
-    public function search(CompanyRepository $repository): Response
-    {
-        $companies = $repository->findAll();
-        return $this->render('search_page/search_page.html.twig', [
-            'companies' => $companies
-        ]);
-    }
     #[Route('/streamer/search/profile/{id}', name: 'app_show_company')]
     public function show_profile(Company $company): Response
     {
@@ -124,16 +134,20 @@ class StreamerController extends AbstractController
         }
         return $this->render('search_page/show_profile.html.twig', [
             'company' => $company,
+            'pp' => $this->getUser()->getProfilePicture(),
             'missing_info_company' => $missing_info_company,
             'missing_info_streamer' => $missing_info_streamer
         ]);
     }
     #[Route('/streamer/contract', name: 'app_streamer_contract')]
-    public function contract(ContractsRepository $contracts): Response
+    public function contract(ContractsRepository $contractsRepo, CompanyRepository $companyRepo): Response
     {
-        $contracts = $contracts->fi;
+        $contracts = $contractsRepo->findBy(['streamer' => $this->getUser()]);
+        foreach ($contracts as $contract) {
+            $contract->getCompany()->getSiret();
+        }
         return $this->render('contract/contract.html.twig', [
-            'contracts' => $this->getUser()->getStreamerContract()
+            'contracts' => $contracts
         ]);
     }
 

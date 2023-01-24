@@ -65,12 +65,6 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: TypeOfContent::class, inversedBy: 'streamers')]
     private Collection $isContent;
 
-    #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Relation::class)]
-    private Collection $relations;
-
-    #[ORM\OneToMany(mappedBy: 'Streamer', targetEntity: Message::class)]
-    private Collection $messages;
-
     #[ORM\Column(length: 255)]
     private ?string $profile_picture = null;
 
@@ -82,8 +76,6 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
         $this->hasProposal = new ArrayCollection();
         $this->isOn = new ArrayCollection();
         $this->isContent = new ArrayCollection();
-        $this->relations = new ArrayCollection();
-        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -372,65 +364,6 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Relation>
-     */
-    public function getRelations(): Collection
-    {
-        return $this->relations;
-    }
-
-    public function addRelation(Relation $relation): self
-    {
-        if (!$this->relations->contains($relation)) {
-            $this->relations->add($relation);
-            $relation->setStreamer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRelation(Relation $relation): self
-    {
-        if ($this->relations->removeElement($relation)) {
-            // set the owning side to null (unless already changed)
-            if ($relation->getStreamer() === $this) {
-                $relation->setStreamer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages->add($message);
-            $message->setStreamer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getStreamer() === $this) {
-                $message->setStreamer(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getProfilePicture(): ?string
     {

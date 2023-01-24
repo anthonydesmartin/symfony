@@ -1,19 +1,151 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
+</head>
+<body>
+{% set url = path(app.request.attributes.get('_route'),
+    app.request.attributes.get('_route_params')) %}
+{% block nav %}
+    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="{{ path('home_page') }}"><img alt="Logo" src="/img/logo/logo_small.png"
+                                                                    class="pull-left w-50"></a>
+        <div class="d-flex align-items-center">
+            {% if app.user.roles[0] == "ROLE_STREAMER" %}
+                 {% if url == "/streamer/offers" %}
+                        <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_streamer_offers') }}">Mes offres</a>
+                    {% else %}
+                        <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_offers') }}">Mes offres</a>
+                 {% endif %}
+                {% if url == "/streamer/contracts" %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_streamer_contracts') }}">Mes contrats</a>
+                {% else %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_contracts') }}">Mes contrats</a>
+                {% endif %}
+            {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
+                {% if url == "/company/requests" %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_company_requests') }}">Mes offres</a>
+                {% else %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_requests') }}">Mes offres</a>
+                {% endif %}
+                {% if url == "/company/contracts" %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_company_contracts') }}">Mes contrats</a>
+                {% else %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contracts') }}">Mes contrats</a>
+                {% endif %}
+            {% endif %}
+            <div class="dropdown d-flex align-items-center">
+                <a class="nav-link mx-4 fs-4 fw-bolder" href="#" role="button" data-bs-toggle="dropdown"
+                   data-bs-display="static" aria-expanded="false">
+                    {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                        {% set verif = true %}
+                        {% if app.user.mail is null or app.user.siret is null or app.user.headOffice is null or app.user.register is null or app.user.description is null %}
+                            {% set verif = false %}
+                        {% endif %}
+                        {% if verif == false %}
+                            <div class="position-relative">
+                                {{ app.user.name }}
+                                <span class="position-absolute top-0  translate-middle badge"><ion-icon name="warning-outline" class="text-danger"></ion-icon></span>
+                            </div>
+                        {% else %}
+                            {{ app.user.name }}
+                        {% endif %}
+                    {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                        {% set verif = true %}
+                            {% if app.user.mail is null or app.user.siret is null %}
+                                {% set verif = false %}
+                            {% endif %}
+                        {% if verif == false %}
+                            <div class="position-relative">
+                                {{ app.user.username }}
+                                <span class="position-absolute top-0  translate-middle badge"><ion-icon name="warning-outline" class="text-danger"></ion-icon></span>
+                            </div>
+                            {% else %}
+                                {{ app.user.username }}
+                        {% endif %}
+
+                    {% endif %}
+                </a>
+
+                {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                    <img alt="icon" src="{{ asset('img/company.png') }}" class="icon-login">
+                    <ul class="dropdown-menu dropdown-menu-lg-end">
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_company_profile') }}">Mon
+                                profil
+                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                    </ul>
+                {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                    <img alt="icon" src="{{ app.user.profilePicture }}" class="icon-login">
+                    <ul class="dropdown-menu dropdown-menu-lg-end">
+                        <li><a class="dropdown-item d-flex align-items-center"
+                               href="{{ path('app_streamer_profile') }}">Mon profil
+                                <ion-icon name="person-circle-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">Déconnexion
+                                <ion-icon name="log-out-outline" class="ms-2"></ion-icon>
+                            </a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}
+{% endblock %}
+{% block footer %}
+    <footer class="w-100 py-4 flex-shrink-0">
+        <div class="container py-4">
+            <div class="row gy-4 gx-5">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="h1 text-white">FB.</h5>
+                    <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                    <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">Bootstrapious.com</a></p>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-white mb-3">Quick links</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-white mb-3">Quick links</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white mb-3">Newsletter</h5>
+                    <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                    <form action="#">
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="text" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" id="button-addon2" type="button"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </div>
+{% endblock %}
+</body>
 </html>

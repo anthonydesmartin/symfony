@@ -1,15 +1,106 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
+{% block nav %}{% endblock %}
 
 {% block body %}
     <main class="d-flex flex-column">
         <nav class="navbar navbar-light justify-content-center border-bottom text-center shadow p-3 mb-5">
             <a class="navbar-brand" href="home.html.twig" ><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         </nav>
-        <div class="container bg-white rounded-4 mt-5">
-            <h1>Créer un compte</h1>
-            <div class="offset-3 col-6 align-items-center">{{ form(registrationForm) }}</div>
+        <div class="container bg-white rounded-4 mt-5 col-xl-6 col-lg-8 col-md-10 col-sm-12">
+            {% if title == "Modifier mon profil" %}
+                <h1 class="text-center mt-5 mb-3">{{ title }}</h1>
+            {% else %}
+                <h1 class="text-center mt-5">Créer un compte {{ url == '/register/streamer' ? "Streamer" : "Entreprise"}}</h1>
+            {% endif %}
+
+            {% if url == '/register/streamer' or url == '/streamer/profile/edit'%}
+                {{ form_start(registrationForm) }}
+
+                <div class="row mx-5">
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.username) }}
+                        {{ form_widget(registrationForm.username) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        {{ form_label(registrationForm.mail) }}
+                        {{ form_widget(registrationForm.mail) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        {{ form_label(registrationForm.siret) }}
+                        {{ form_widget(registrationForm.siret) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.password.first) }}
+                        {{ form_widget(registrationForm.password.first) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.password.second) }}
+                        {{ form_widget(registrationForm.password.second) }}
+                    </div>
+                    <div class="flex-column text-nowrap my-2">
+                        {{ form_label(registrationForm.isMature) }}
+                        {{ form_widget(registrationForm.isMature) }}
+                    </div>
+                    <div class="flex-column text-nowrap text-center mb-4" >
+                        {{ form_label(registrationForm.save) }}
+                        {{ form_widget(registrationForm.save) }}
+                    </div>
+                </div>
+                {{ form_end(registrationForm) }}
+            {% elseif url == '/register/company' or url == '/company/profile/edit' %}
+                {{ form_start(registrationForm) }}
+
+                <div class="row mx-5">
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.name) }}
+                        {{ form_widget(registrationForm.name) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        {{ form_label(registrationForm.mail) }}
+                        {{ form_widget(registrationForm.mail) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.siret) }}
+                        {{ form_widget(registrationForm.siret) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        {{ form_label(registrationForm.headOffice) }}
+                        {{ form_widget(registrationForm.headOffice) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        {{ form_label(registrationForm.register) }}
+                        {{ form_widget(registrationForm.register) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        {{ form_label(registrationForm.description) }}
+                        {{ form_widget(registrationForm.description) }}
+                    </div>
+
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.password.first) }}
+                        {{ form_widget(registrationForm.password.first) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(registrationForm.password.second) }}
+                        {{ form_widget(registrationForm.password.second) }}
+                    </div>
+                    <div class="flex-column text-nowrap text-center mt-4 mb-4" >
+                        {{ form_label(registrationForm.save) }}
+                        {{ form_widget(registrationForm.save) }}
+                    </div>
+                </div>
+                {{ form_end(registrationForm) }}
+            {% endif %}
+
         </div>
     </main>
 {% endblock %}
