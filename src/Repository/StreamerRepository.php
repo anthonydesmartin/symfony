@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Streamer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -57,38 +58,29 @@ class StreamerRepository extends ServiceEntityRepository implements PasswordUpgr
         $this->save($user, true);
     }
 
-    public const STREAMERS_PER_PAGE = 12;
+    public const STREAMERS_PER_PAGE = 10;
+
     /**
      * @return Paginator Returns an Paginator object for Streamer entity for Companies
      */
-    public function getPaginatorStreamer( int $offset): Paginator
+    public function getPaginatorStreamer(int $offset, string $username, string $game): Paginator
     {
-        $query = $this->createQueryBuilder('s')
-            ->orderBy('s.username', 'ASC')
+        $query = $this->createQueryBuilder('s');
+        if ($username !== '') {
+            $query->andWhere($query->expr()->like('s.username', ':username'))
+                ->setParameter('username', $username.'%');
+        };
+        if ($game !== '') {
+            $query->leftJoin('s.streamThis', 'c')
+                ->andWhere('c.name = :game')
+                ->setParameter('game', $game);
+        };
+        $query->orderBy('s.username', 'ASC')
             ->setMaxResults(self::STREAMERS_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery();
 
         return new Paginator($query);
-    }
-
-
-     /**
-     * @return Array Returns in list of Streamer objects
-     */
-    public function getListUsername(): array
-    {
-        $username =[];
-        foreach ($this->createQueryBuilder('fil')
-            ->select('fil.username')
-            ->distinct(true)
-            ->orderBy('fil.username', 'ASC')
-            ->getQuery()
-            ->getResult() as $ligne)
-        {
-            $username[] = $ligne['username'];
-        }
-        return $username;
     }
 
 
