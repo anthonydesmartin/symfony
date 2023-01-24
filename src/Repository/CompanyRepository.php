@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -54,7 +55,14 @@ class CompanyRepository extends ServiceEntityRepository implements PasswordUpgra
         $user->setPassword($newHashedPassword);
 
         $this->save($user, true);
+
+
     }
+
+
+
+
+
 
 //    /**
 //     * @return Company[] Returns an array of Company objects

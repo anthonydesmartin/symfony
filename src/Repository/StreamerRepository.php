@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Streamer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,6 +57,32 @@ class StreamerRepository extends ServiceEntityRepository implements PasswordUpgr
 
         $this->save($user, true);
     }
+
+    public const STREAMERS_PER_PAGE = 10;
+
+    /**
+     * @return Paginator Returns an Paginator object for Streamer entity for Companies
+     */
+    public function getPaginatorStreamer(int $offset, string $username, string $game): Paginator
+    {
+        $query = $this->createQueryBuilder('s');
+        if ($username !== '') {
+            $query->andWhere($query->expr()->like('s.username', ':username'))
+                ->setParameter('username', $username.'%');
+        };
+        if ($game !== '') {
+            $query->leftJoin('s.streamThis', 'c')
+                ->andWhere('c.name = :game')
+                ->setParameter('game', $game);
+        };
+        $query->orderBy('s.username', 'ASC')
+            ->setMaxResults(self::STREAMERS_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery();
+
+        return new Paginator($query);
+    }
+
 
 //    /**
 //     * @return Streamer[] Returns an array of Streamer objects

@@ -39,6 +39,26 @@ class CategoriesRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Array Returns in list of Category objects
+     */
+    public function getListGame(): array
+    {
+        $game =[];
+        foreach ($this->createQueryBuilder('gam')
+                     ->select('gam.name, gam.id')
+                     ->distinct(true)
+                     ->orderBy('gam.name', 'ASC')
+                     ->getQuery()
+                     ->getResult() as $ligne)
+        {
+            $game[$ligne['id']]['name'] = $ligne['name'];
+            $game[$ligne['id']]['id']= $ligne['id'];
+        }
+        return $game;
+    }
+
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
