@@ -4,7 +4,6 @@
 
 {% block body %}
     <main class="container">
-        <h1>Mes offres</h1>
         <div class="row">
             {% for proposal in proposals %}
                 <div class="col-4">
@@ -24,7 +23,7 @@
                             {% if app.user.roles[0] == "ROLE_COMPANY" %}
                                 <p class="card-text">Status : {{ proposal.hasProposalStatus.name }}</p>
                                 {% if proposal.hasProposalStatus.id == 2 %}
-                                    <a href="" class="btn btn-success" >Générer un contrat</a>
+                                    <a href="{{ path('app_make_contract', {id: proposal.streamer.id }) }}" class="btn btn-success" >Générer un contrat</a>
                                 {% endif %}
                             {% endif %}
                         </div>

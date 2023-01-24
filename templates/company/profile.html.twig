@@ -32,7 +32,12 @@
                         Non renseigné !
                     {% endif %}
                 </li>
-                <li class="list-group-item">Description : {{ app.user.description }}</li>
+                <li class="list-group-item">Description :
+                    {% if app.user.description %}
+                        {{ app.user.description }}
+                    {% else %}
+                        Non renseigné !
+                    {% endif %}</li>
 
             </ul>
         </div>

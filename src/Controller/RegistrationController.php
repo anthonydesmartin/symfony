@@ -81,33 +81,31 @@ class RegistrationController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // retrieve twitch id and profile picture
             $streamer = getStreamerTwitchIdAndPp($form, $client);
+            // set streamer twitch id
             $user->setIdStreamer($streamer['id']);
+            // get streamer followers
             $followers = getStreamerTwitchFollowers($form, $client, $streamer['id']);
+            // set streamer followers
             $user->setFollowers($followers);
+            // get streamer profile picture
             $pp = $streamer['profile_image_url'];
+            // set streamer profile picture
             $user->setProfilePicture($pp);
-//             encode the plain password
+            // encode password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
             );
-
+            // set user role
             $user->setRoles(['ROLE_STREAMER']);
-
-
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
-
+            // save user in database
             $entityManager->persist($user);
+
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(
                 $user,
