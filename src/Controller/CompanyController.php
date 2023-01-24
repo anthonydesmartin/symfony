@@ -5,31 +5,30 @@ namespace App\Controller;
 
 use App\Entity\Streamer;
 use App\Form\RegistrationFormType;
-
-
-use App\Repository\ContractsRepository;
-
 use App\Repository\CategoriesRepository;
 use App\Repository\CompanyRepository;
-
+use App\Repository\ContractsRepository;
+use App\Repository\StreamerRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\StreamerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+
 
 class CompanyController extends AbstractController
 {
-    #[Route('/company', name: 'app_company')]
-    public function index(): Response
+    #[Route('/company', name: 'app_company')] public function index(StreamerRepository $streamerRepo): Response
     {
-        return $this->render('company/company.html.twig', [
-            'controller_name' => 'CompanyController',
-        ]);
+        $streamers = $streamerRepo->getTopStreamers();
+
+        return $this->render(
+            'company/company.html.twig',
+            ['controller_name' => 'CompanyController', 'streamers' => $streamers]
+        );
     }
 
     #[Route('/company/profile', name: 'app_company_profile')]
@@ -42,7 +41,7 @@ class CompanyController extends AbstractController
             'Siret' => $companyinfo->getSiret(),
             'Head_Office' => $companyinfo->getHeadOffice(),
             'Register' => $companyinfo->getRegister(),
-            'Description' => $companyinfo->getDescription()
+            'Description' => $companyinfo->getDescription(),
         ];
         $missing_info = [];
 
@@ -55,13 +54,18 @@ class CompanyController extends AbstractController
 
         return $this->render('company/profile.html.twig', [
             'controller_name' => 'profile',
-            'missing_info' => $missing_info
+            'missing_info' => $missing_info,
         ]);
     }
 
     #[Route('/company/profile/edit', name: 'app_company_profile_edit')]
-    public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, StreamerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserAuthenticatorInterface $userAuthenticator,
+        StreamerAuthenticator $authenticator,
+        EntityManagerInterface $entityManager
+    ): Response {
         $company = $this->getUser();
         $form = $this->createForm(RegistrationFormType::class, $company);
         $form->handleRequest($request);
@@ -76,8 +80,10 @@ class CompanyController extends AbstractController
             );
             $entityManager->persist($company);
             $entityManager->flush();
+
             return $this->redirectToRoute('app_company_profile');
         }
+
         return $this->render('registration/register.html.twig', [
             'title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
@@ -85,15 +91,15 @@ class CompanyController extends AbstractController
     }
 
 
-
-
-
     #[Route('/company/search', name: 'app_company_search')]
-    public function getPaginatorStreamer(StreamerRepository $streamerRepository, CategoriesRepository $categoriesRepository, Request $request): Response
-    {
+    public function getPaginatorStreamer(
+        StreamerRepository $streamerRepository,
+        CategoriesRepository $categoriesRepository,
+        Request $request
+    ): Response {
         $username_search = $request->get('username_search', '');
         $game_search = $request->get('game_search', '');
-        $offset= max(0, $request->get('offset', 0));
+        $offset = max(0, $request->get('offset', 0));
         $paginator = $streamerRepository->getPaginatorStreamer($offset, $username_search, $game_search);
         $games = $categoriesRepository->getListGame();
 
@@ -102,14 +108,11 @@ class CompanyController extends AbstractController
             'games' => $games,
             'streamers' => $paginator,
             'previous' => $offset - StreamerRepository::STREAMERS_PER_PAGE,
-            'next' => min(count($paginator),$offset + StreamerRepository::STREAMERS_PER_PAGE),
+            'next' => min(count($paginator), $offset + StreamerRepository::STREAMERS_PER_PAGE),
             'username_search' => $username_search,
             'game_search' => $game_search,
         ]);
     }
-
-
-
 
 
     #[Route('/company/search/profile/{id}', name: 'app_show_streamer')]
@@ -138,11 +141,12 @@ class CompanyController extends AbstractController
                 $missing_info_streamer = true;
             }
         }
+
         return $this->render('search_page/show_profile.html.twig', [
             'streamer' => $streamer,
             'missing_info_company' => $missing_info_company,
             'missing_info_streamer' => $missing_info_streamer,
-            'profile_picture' => $streamer->getProfilePicture()
+            'profile_picture' => $streamer->getProfilePicture(),
         ]);
     }
 
@@ -153,8 +157,9 @@ class CompanyController extends AbstractController
         foreach ($contracts as $contract) {
             $contract->getStreamer()->getIdStreamer();
         }
+
         return $this->render('contract/contract.html.twig', [
-            'contracts' => $contracts
+            'contracts' => $contracts,
         ]);
     }
 

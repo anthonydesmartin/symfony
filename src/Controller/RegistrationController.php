@@ -20,6 +20,52 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RegistrationController extends AbstractController
 {
 
+    function clearHeaders(){
+        header_remove('Authorization');
+        header_remove('Client-Id');
+        header_remove('ContentType');
+    }
+
+    function getStreamerTwitchIdAndPp($username, $client)
+    {
+        $this->clearHeaders();
+        $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
+        $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
+        $response = $client->request(
+            'GET',
+            'https://api.twitch.tv/helix/users?login='.$username,
+            [
+                'headers' => [
+                    "Authorization: $twitch_oauth_token",
+                    "Client-Id: $twitch_client_id",
+                    "ContentType: application/json",
+                ],
+            ]
+        );
+
+        return $response->toArray()['data'][0];
+    }
+
+    function getStreamerTwitchFollowers($client, $id)
+    {
+        $this->clearHeaders();
+        $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
+        $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
+        $response = $client->request(
+            'GET',
+            'https://api.twitch.tv/helix/users/follows?to_id='.$id,
+            [
+                'headers' => [
+                    "Authorization: $twitch_oauth_token",
+                    "Client-Id: $twitch_client_id",
+                    "ContentType: application/json",
+                ],
+            ]
+        );
+
+        return $response->toArray()['total'];
+    }
+
     #[Route('/register/streamer', name: 'app_register_streamer')]
     public function registerStreamer(
         Request $request,
@@ -33,60 +79,13 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        function clearHeaders(){
-            header_remove('Authorization');
-            header_remove('Client-Id');
-            header_remove('ContentType');
-        }
-
-        function getStreamerTwitchIdAndPp($form, $client)
-        {
-            clearHeaders();
-            $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
-            $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
-            $username = $form->get('username')->getData();
-            $response = $client->request(
-                'GET',
-                'https://api.twitch.tv/helix/users?login='.$username,
-                [
-                    'headers' => [
-                        "Authorization: $twitch_oauth_token",
-                        "Client-Id: $twitch_client_id",
-                        "ContentType: application/json",
-                    ],
-                ]
-            );
-
-            return $response->toArray()['data'][0];
-        }
-
-        function getStreamerTwitchFollowers($form, $client, $id)
-        {
-            clearHeaders();
-            $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
-            $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
-            $response = $client->request(
-                'GET',
-                'https://api.twitch.tv/helix/users/follows?to_id='.$id,
-                [
-                    'headers' => [
-                        "Authorization: $twitch_oauth_token",
-                        "Client-Id: $twitch_client_id",
-                        "ContentType: application/json",
-                    ],
-                ]
-            );
-
-            return $response->toArray()['total'];
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
             // retrieve twitch id and profile picture
-            $streamer = getStreamerTwitchIdAndPp($form, $client);
+            $streamer = $this->getStreamerTwitchIdAndPp($form->get('username')->getData(), $client);
             // set streamer twitch id
             $user->setIdStreamer($streamer['id']);
             // get streamer followers
-            $followers = getStreamerTwitchFollowers($form, $client, $streamer['id']);
+            $followers = $this->getStreamerTwitchFollowers($client, $streamer['id']);
             // set streamer followers
             $user->setFollowers($followers);
             // get streamer profile picture

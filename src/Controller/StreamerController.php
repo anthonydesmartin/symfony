@@ -3,22 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Company;
-use App\Entity\Contract;
-use App\Entity\ContractStatus;
-use App\Entity\Proposal;
-use App\Entity\ProposalStatus;
 use App\Entity\Streamer;
-use App\Form\ContractType;
-use App\Form\ProposalType;
 use App\Form\RegistrationFormType;
-use App\Controller\RegistrationController;
 use App\Repository\CompanyRepository;
 use App\Repository\ContractsRepository;
-use App\Repository\ProposalRepository;
+use App\Repository\StreamerRepository;
 use App\Security\StreamerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,7 +60,6 @@ class StreamerController extends AbstractController
     }
 
 
-
     #[Route('/streamer/profile/edit', name: 'app_streamer_profile_edit')]
     public function edit(
         Request $request,
@@ -77,7 +69,8 @@ class StreamerController extends AbstractController
         EntityManagerInterface $entityManager,
         HttpClientInterface $client
     ): Response {
-        function clearHeaders(){
+        function clearHeaders()
+        {
             header_remove('Authorization');
             header_remove('Client-Id');
             header_remove('ContentType');
@@ -97,6 +90,7 @@ class StreamerController extends AbstractController
             );
             $entityManager->persist($streamer);
             $entityManager->flush();
+
             return $this->redirectToRoute('app_streamer_profile');
         }
 
@@ -132,13 +126,15 @@ class StreamerController extends AbstractController
                 $missing_info_streamer[] = $key;
             }
         }
+
         return $this->render('search_page/show_profile.html.twig', [
             'company' => $company,
             'pp' => $this->getUser()->getProfilePicture(),
             'missing_info_company' => $missing_info_company,
-            'missing_info_streamer' => $missing_info_streamer
+            'missing_info_streamer' => $missing_info_streamer,
         ]);
     }
+
     #[Route('/streamer/contract', name: 'app_streamer_contract')]
     public function contract(ContractsRepository $contractsRepo, CompanyRepository $companyRepo): Response
     {
@@ -146,11 +142,28 @@ class StreamerController extends AbstractController
         foreach ($contracts as $contract) {
             $contract->getCompany()->getSiret();
         }
+
         return $this->render('contract/contract.html.twig', [
-            'contracts' => $contracts
+            'contracts' => $contracts,
         ]);
     }
 
+    #[Route('/streamer/profile/refresh', name: 'app_streamer_profile_refresh')]
+    public function refresh(RegistrationController $registrationController, StreamerRepository $streamerRepo, HttpClientInterface
+    $client, EntityManagerInterface $entityManager):
+    Response
+    {
+        $streamer = $this->getUser()->getUserIdentifier();
+        $streamerpp = $registrationController->getStreamerTwitchIdAndPp($streamer, $client);
+        $streamerfollowers = $registrationController->getStreamerTwitchFollowers($client, $streamerpp['id']);
+        $user = $streamerRepo->findOneBy(['username' => $streamer]);
+        $user->setProfilePicture($streamerpp['profile_image_url']);
+        $user->setFollowers($streamerfollowers);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_streamer_profile');
+    }
 
 
 }
