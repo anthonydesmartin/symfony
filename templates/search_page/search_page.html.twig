@@ -11,7 +11,7 @@
                     <h2>Liste des Streamers</h2>
                     <form>
                         <div class="row form-group">
-                            <label for="username_search" class="col-3 col-from-label text-end">Streamers</label>
+                            <label for="username_search" class="col-4 col-from-label text-end">Streamers</label>
                             <div class="col-8">
                                 <input class="form-control" type="text" name="username_search"
                                        value="{{ username_search }}"
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="row form-group mb-3">
-                            <label for="game_search" class="col-3 col-from-label text-end">Jeux</label>
+                            <label for="game_search" class="col-4 col-from-label text-end">Jeux</label>
                             <div class="col-8">
                                 <select class="form-control" id="game_search" name="game_search">
                                     <option {{ game_search == '' ? 'selected': '' }} value="">(Tous les jeux)
