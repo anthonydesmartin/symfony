@@ -16,7 +16,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 {% set url = path(app.request.attributes.get('_route'),
     app.request.attributes.get('_route_params')) %}
 {% block nav %}
@@ -110,7 +110,7 @@
 {% block body %}
 {% endblock %}
 {% block footer %}
-    <footer class="mt-auto w-100 py-4 flex-shrink-0">
+    <footer class="mt-5 w-100 py-4 flex-shrink-0">
         <div class="container py-4">
             <div class="row gy-4 gx-5">
                 <div class="col-lg-4 col-md-6">
