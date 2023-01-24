@@ -6,8 +6,8 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="ms-2 col-2 rounded-4 mt-5">
-                <div class="body text-center" id="filter">
+            <div class="ms-2 col-sm-4 col-md-3 col-lg-2 rounded-4 mt-5">
+                <div class="body text-center d-flex flex-column justify-content-center" id="filter">
                     <h2>Liste des Streamers</h2>
                     <form>
                         <div class="row form-group">
@@ -32,7 +32,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row offset-4 col-4">
+                        <div class="row">
                             <button type="submit" class="btn btn-primary">Rechercher</button>
                         </div>
                     </form>
@@ -41,7 +41,7 @@
             <div class="col rounded-5 me-2 my-3" id="offers">
                 <div class="row gap-3 justify-content-center mt-4">
                     {% for streamer in streamers %}
-                        <div class="card col-2">
+                        <div class="card col-sm-4 col-md-3 col-lg-2">
                             <img src="{{ streamer.profilePicture }}" class="card-img-top mt-3">
                             <div class="card-body">
                                 <div class="col"><p>{{ streamer.username }}</p></div>
