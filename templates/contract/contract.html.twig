@@ -2,5 +2,38 @@
 
 
 {% block body %}
+<div class="container mt-5">
+    {% for contract in contracts %}
+        <div class="card col-6">
+            <h5 class="card-header">Contrat entre vous et {{ contract.streamer.username }}</h5>
+            <div class="card-body">
+                <p class="card-text">Format de la campagne: {{ contract.format }}</p>
+                <p class="card-text">Prix de la campagne: {{ contract.price }} €</p>
+                <p class="card-text mb-1">
+                    {% if contract.hasContractStatus[0].getSignatureStreamer != null %}
+                        <span class="badge bg-success">Contrat signé par le streamer</span>
+                    {% else %}
+                        <span class="badge bg-danger">Contrat non signé par le streamer</span>
+                    {% endif %}
+                </p>
+                <p class="card-text mb-1">
+                    {% if contract.hasContractStatus[0].getSignatureCompany != null %}
+                        <span class="badge bg-success">Contrat signé par vous</span>
+                    {% else %}
+                        <span class="badge bg-danger">Contrat non signé</span>
+                    {% endif %}
+                </p>
+                <p class="card-text">
+                    <a href="{{ path('app_company_show_contract', {id: contract.id}) }}" class="btn btn-primary">Voir le contrat</a>
+                    {% if contract.hasContractStatus[0].getSignatureCompany == null %}
+                        <a href="{{ path('app_company_contract_signature', {id: contract.id}) }}" class="btn btn-warning text-dark">Signer le contrat</a>
+                    {% endif %}
+                </p>
+
+
+            </div>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock %}

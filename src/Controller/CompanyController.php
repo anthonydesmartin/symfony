@@ -146,17 +146,7 @@ class CompanyController extends AbstractController
         ]);
     }
 
-    #[Route('/company/contract', name: 'app_company_contract')]
-    public function contract(ContractsRepository $contractsRepo, CompanyRepository $companyRepo): Response
-    {
-        $contracts = $contractsRepo->findBy(['company' => $this->getUser()]);
-        foreach ($contracts as $contract) {
-            $contract->getStreamer()->getIdStreamer();
-        }
-        return $this->render('contract/contract.html.twig', [
-            'contracts' => $contracts
-        ]);
-    }
+
 
 
 }
