@@ -13,7 +13,8 @@
                         <div class="row form-group">
                             <label for="username_search" class="col-3 col-from-label text-end">Streamers</label>
                             <div class="col-8">
-                                <input class="form-control" type="text" name="username_search" value="{{ username_search }}"
+                                <input class="form-control" type="text" name="username_search"
+                                       value="{{ username_search }}"
                                        id="username_search">
                             </div>
                         </div>
@@ -58,7 +59,8 @@
                        href="{{ path('app_company_search', {offset: previous} ) }}">Précédent</a>
                 {% endif %}
                 {% if next < streamers | length %}
-                    <a type="button" class="btn btn-primary rounded-4 col-2 fs-2 fw-bolder my-4"
+                    <a type="button" class="btn btn-primary rounded-4 col-2 fs-2 fw-bolder my-4 {% if previous < 0 %}offset-5
+{% endif %}"
                        href="{{ path('app_company_search', {offset: next} ) }}">Suivant</a>
                 {% endif %}
             </div>
