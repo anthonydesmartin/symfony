@@ -46,13 +46,14 @@ class CategoriesRepository extends ServiceEntityRepository
     {
         $game =[];
         foreach ($this->createQueryBuilder('gam')
-                     ->select('gam.name')
+                     ->select('gam.name, gam.id')
                      ->distinct(true)
                      ->orderBy('gam.name', 'ASC')
                      ->getQuery()
                      ->getResult() as $ligne)
         {
-            $game[] = $ligne['name'];
+            $game[$ligne['id']]['name'] = $ligne['name'];
+            $game[$ligne['id']]['id']= $ligne['id'];
         }
         return $game;
     }

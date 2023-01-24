@@ -4,82 +4,65 @@
 
 {% block body %}
 
-    <div class="container-fluid mh-100">
-        <div class="w-100 h-100 d-flex flex-column">
-
-            <div class="container-fluid row rounded-4 p-0 m-0">
-                <div class="bg-black col-3" id="filter">
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="ms-2 col-2 rounded-4 mt-5">
+                <div class="body text-center" id="filter">
                     <h2>Liste des Streamers</h2>
-                    <div class="row form-group">
-                        <label for="username_search" class="col-3 col-from-label text-end">Streamers</label>
-                        <div class="col-6">
-                            <select class="form-control" id="username_search" name="username_search">
-                                <option value="">(Tous les Streamers)</option>
-                                {% for username in usernames %}
-                                    <option>
-                                        {{ username }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-
-                            <div class="row form-group">
-                                <label for="game_search" class="col-3 col-from-label text-end">Jeux</label>
-                                <div class="col-6">
-                                    <select class="form-control" id="game_search" name="game_search">
-                                        <option value="">(Games)</option>
-                                        {% for game in games %}
-                                            <option>
-                                                {{ game }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-
+                    <form>
+                        <div class="row form-group">
+                            <label for="username_search" class="col-3 col-from-label text-end">Streamers</label>
+                            <div class="col-8">
+                                <input class="form-control" type="text" name="username_search"
+                                       value="{{ username_search }}"
+                                       id="username_search">
                             </div>
                         </div>
-
-
-                    </div>
-
-
-                    <div class="row">
-                        <button type="submit" class="btn-primary">Rechercher</button>
-                    </div>
-
-
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
-                    <h1>Les Entreprises</h1>
+                        <div class="row form-group mb-3">
+                            <label for="game_search" class="col-3 col-from-label text-end">Jeux</label>
+                            <div class="col-8">
+                                <select class="form-control" id="game_search" name="game_search">
+                                    <option {{ game_search == '' ? 'selected': '' }} value="">(Tous les jeux)
+                                    </option>
+                                    {% for game in games %}
+                                        <option {{ game_search == game['name'] ? 'selected' : '' }}>
+                                            {{ game['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row offset-4 col-4">
+                            <button type="submit" class="btn btn-primary">Rechercher</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="bg-danger col container" id="offers">
-                    <div class="row gap-3 justify-content-center mt-4">
-                            {% for streamer in streamers %}
-                                <div class="card col-3" style="width: 18rem;">
-                                    <img src="{{ streamer.profilePicture }}" class="card-img-top mt-3">
-                                    <div class="card-body">
-                                        <div class="col"><p>{{ streamer.username }}</p></div>
+            </div>
+            <div class="col rounded-5 me-2 my-3" id="offers">
+                <div class="row gap-3 justify-content-center mt-4">
+                    {% for streamer in streamers %}
+                        <div class="card col-2">
+                            <img src="{{ streamer.profilePicture }}" class="card-img-top mt-3">
+                            <div class="card-body">
+                                <div class="col"><p>{{ streamer.username }}</p></div>
 
-                                        <a href="{{ path('app_show_streamer', { id: streamer.id }) }}"
-                                           class="btn btn-success">Voir le streamer</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
-                            {% if previous >= 0 %}
-                                <a type="button" class="btn btn-primary col-3 fs-2 fw-bolder"
-                                   href="{{ path('app_company_search', {offset: previous} ) }}">Précédent</a>
-                            {% endif %}
-                            {% if next < streamers | length %}
-                                <a type="button" class="btn btn-primary col-3 fs-2 fw-bolder"
-                                   href="{{ path('app_company_search', {offset: next} ) }}">Suivant</a>
-                            {% endif %}
+                                <a href="{{ path('app_show_streamer', { id: streamer.id }) }}"
+                                   class="btn btn-success">Voir le streamer</a>
+                            </div>
+                        </div>
+                    {% endfor %}
 
 
-
-                    </div>
                 </div>
+                {% if previous >= 0 %}
+                    <a type="button" class="btn btn-primary offset-4 rounded-4 col-2 fs-2 fw-bolder my-4"
+                       href="{{ path('app_company_search', {offset: previous} ) }}">Précédent</a>
+                {% endif %}
+                {% if next < streamers | length %}
+                    <a type="button" class="btn btn-primary rounded-4 col-2 fs-2 fw-bolder my-4 {% if previous < 0 %}offset-5
+{% endif %}"
+                       href="{{ path('app_company_search', {offset: next} ) }}">Suivant</a>
+                {% endif %}
             </div>
         </div>
     </div>

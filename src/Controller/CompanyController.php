@@ -92,18 +92,20 @@ class CompanyController extends AbstractController
     #[Route('/company/search', name: 'app_company_search')]
     public function getPaginatorStreamer(StreamerRepository $streamerRepository, CategoriesRepository $categoriesRepository, Request $request): Response
     {
+        $username_search = $request->get('username_search', '');
+        $game_search = $request->get('game_search', '');
         $offset= max(0, $request->get('offset', 0));
-        $paginator = $streamerRepository->getPaginatorStreamer($offset);
-        $usernames = $streamerRepository->getListUsername();
+        $paginator = $streamerRepository->getPaginatorStreamer($offset, $username_search, $game_search);
         $games = $categoriesRepository->getListGame();
 
 
         return $this->render('search_page/search_page.html.twig', [
             'games' => $games,
-            'usernames'=> $usernames,
             'streamers' => $paginator,
             'previous' => $offset - StreamerRepository::STREAMERS_PER_PAGE,
             'next' => min(count($paginator),$offset + StreamerRepository::STREAMERS_PER_PAGE),
+            'username_search' => $username_search,
+            'game_search' => $game_search,
         ]);
     }
 
