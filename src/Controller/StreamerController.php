@@ -37,6 +37,7 @@ class StreamerController extends AbstractController
             'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
+
     #[Route('/streamer/profile', name: 'app_streamer_profile')]
     public function profile(): Response
     {
@@ -149,5 +150,7 @@ class StreamerController extends AbstractController
             'contracts' => $contracts
         ]);
     }
+
+
 
 }

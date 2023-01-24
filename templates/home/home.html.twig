@@ -10,12 +10,14 @@
             <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_login') }}">Se connecter</a>
         </div>
     </nav>
+
 {% endblock %}
 {% block body %}
     <main class="container-fluid">
         {% block section %}
             <section class="row rounded shadow p-3 mb-5 mt-3 flex-sm-column flex-md-row">
                 <div class="col d-flex align-items-center row">
+
                     <h1>Bienvenue dans notre espace de ressource</h1>
 
                     <h2 class="h2_home">A propos :</h2>
@@ -30,6 +32,7 @@
                 </div>
             </section>
         {% endblock %}
+
 
         <aside><p class="fs-2 fw-bolder">Vous voulez vous associer à des streamers influents pour promouvoir votre
                 marque? Rejoignez notre plateforme pour découvrir les talents les plus pertinents. Notre plateforme est
@@ -47,4 +50,5 @@
             </div>
         </aside>
     </main>
+
 {% endblock %}
