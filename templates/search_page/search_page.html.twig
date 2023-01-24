@@ -5,11 +5,6 @@
 {% block body %}
     <div class="container-fluid mh-100">
         <div class="w-100 h-100 d-flex flex-column">
-            {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                <h1>Les Streamers</h1>
-            {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                <h1>Les Entreprises</h1>
-            {% endif %}
             <div class="container-fluid row rounded-4 p-0 m-0">
                 <div class="bg-black col-3" id="filter">
                     <h1>Les Entreprises</h1>
@@ -27,7 +22,6 @@
                 </div>
                 <div class="bg-danger col container" id="offers">
                     <div class="row gap-3 justify-content-center mt-4">
-                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
                             {% for streamer in streamers %}
                                 <div class="card col-3" style="width: 18rem;">
                                     <img src="{{ streamer.profilePicture }}"  class="card-img-top mt-3">
@@ -37,17 +31,6 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                        {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                            {% for company in companies %}
-                                <div class="card col-3" style="width: 18rem;">
-                                    <img src="{{ asset('img/company.png') }}"  class="card-img-top mt-3">
-                                    <div class="card-body">
-                                        <div class="col"><p>{{ company.name }}</p></div>
-                                        <a href="{{ path('app_show_company', { id: company.id }) }}" class="btn btn-success">Voir l'entreprise</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
                     </div>
                 </div>
             </div>

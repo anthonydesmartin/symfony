@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class StreamerController extends AbstractController
 {
@@ -72,8 +73,15 @@ class StreamerController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher,
         UserAuthenticatorInterface $userAuthenticator,
         StreamerAuthenticator $authenticator,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        HttpClientInterface $client
     ): Response {
+        function clearHeaders(){
+            header_remove('Authorization');
+            header_remove('Client-Id');
+            header_remove('ContentType');
+        }
+
         $streamer = $this->getUser();
         $form = $this->createForm(RegistrationFormType::class, $streamer);
         $form->handleRequest($request);
@@ -88,24 +96,12 @@ class StreamerController extends AbstractController
             );
             $entityManager->persist($streamer);
             $entityManager->flush();
-
             return $this->redirectToRoute('app_streamer_profile');
         }
 
         return $this->render('registration/register.html.twig', [
             'title' => 'Modifier mon profil',
             'registrationForm' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/streamer/search', name: 'app_streamer_search')]
-    public function search(CompanyRepository $repository): Response
-    {
-        $companies = $repository->findAll();
-
-        return $this->render('search_page/search_page.html.twig', [
-            'companies' => $companies,
-            'pp' => $this->getUser()->getProfilePicture(),
         ]);
     }
 
