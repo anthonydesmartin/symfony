@@ -1,2 +1,33 @@
+{% extends 'base.html.twig' %}
 
-{{ form(proposalForm) }}
+{% block body %}
+
+
+    <main class="d-flex flex-column">
+        <div class="container bg-white rounded-4 mt-5 col-xl-6 col-lg-8 col-md-10 col-sm-12">
+
+                <h1 class="text-center mt-5 mb-3">Proposition d'offre</h1>
+                    {{ form_start(proposalForm) }}
+
+                <div class="row mx-5">
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(proposalForm.format) }}
+                        {{ form_widget(proposalForm.format) }}
+                    </div>
+                    <div class="flex-column text-nowrap">
+                        <span class="text-danger">*</span>
+                        {{ form_label(proposalForm.description) }}
+                        {{ form_widget(proposalForm.description) }}
+                    </div>
+                    <div class="flex-column text-nowrap text-center mt-4 mb-4" >
+                        {{ form_label(proposalForm.save) }}
+                        {{ form_widget(proposalForm.save) }}
+                    </div>
+                    {{ form_end(proposalForm) }}
+            </div>
+
+        </div>
+    </main>
+{% endblock %}
+
