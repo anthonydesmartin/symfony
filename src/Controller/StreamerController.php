@@ -152,7 +152,7 @@ class StreamerController extends AbstractController
     {
         $streamer = $this->getUser()->getUserIdentifier();
         $user = $streamerRepo->findOneBy(['username' => $streamer]);
-        $streamerpp = $registrationController->getStreamerTwitchIdAndPp($user->getIdStreamer(),
+        $streamerpp = $registrationController->getStreamerTwitchPp($user->getIdStreamer(),
 	        $client);
         $streamerfollowers =
 	        $registrationController->getStreamerTwitchFollowers($client,
@@ -174,7 +174,7 @@ class StreamerController extends AbstractController
 		$streamers = $streamerRepo->findAll();
 		set_time_limit(0);
 		foreach ($streamers as $streamer){
-			$streamerpp = $registrationController->getStreamerTwitchIdAndPp
+			$streamerpp = $registrationController->getStreamerTwitchPp
 			($streamer->getIdStreamer(), $client);
 			$streamerfollowers = $registrationController->getStreamerTwitchFollowers($client, $streamer->getIdStreamer());
 			$user = $streamerRepo->findOneBy(['username' => $streamer->getUsername()]);

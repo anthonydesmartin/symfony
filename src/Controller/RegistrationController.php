@@ -43,10 +43,10 @@ class RegistrationController extends AbstractController {
 		return $response->toArray()['data'][0]['id'];
 	}
 
-	function getStreamerTwitchPp($id, $client)
+	function getStreamerTwitchPp($id, $client, $need = false)
 	{
 		$this->clearHeaders();
-		if (get_called_class() == self::class)
+		if ($need)
 		{
 			$id = $this->getStreamerTwitchId($id, $client);
 		}
@@ -105,7 +105,7 @@ class RegistrationController extends AbstractController {
 			// retrieve twitch id and profile picture
 			$streamer = $this->getStreamerTwitchPp(
 				$form->get('username')->getData(),
-				$client
+				$client, true
 			);
 			// set streamer twitch id
 			$user->setIdStreamer($streamer['id']);
