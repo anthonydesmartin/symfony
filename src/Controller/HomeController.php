@@ -17,6 +17,9 @@ class HomeController extends AbstractController
         if ($this->isGranted('ROLE_COMPANY')) {
             return $this->redirectToRoute('app_company');
         }
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin');
+        }
 
         return $this->render('home/home.html.twig', [
             'controller_name' => 'HomeController',

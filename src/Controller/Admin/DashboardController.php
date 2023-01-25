@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\CompanyController;
+use App\Entity\Admin;
 use App\Entity\Company;
 use App\Entity\Streamer;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -19,19 +20,6 @@ class DashboardController extends AbstractDashboardController {
 	#[Route('/admin', name: 'admin')]
 	public function index(): Response
 	{
-//		$adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-//		return $this->redirect($adminUrlGenerator->setController(StreamerCrudController::class)
-//		                                         ->generateUrl());
-
-		// Option 2. You can make your dashboard redirect to different pages depending on the user
-		//
-		// if ('jane' === $this->getUser()->getUsername()) {
-		//     return $this->redirect('...');
-		// }
-
-		// Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-		// (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-		//
 		 return $this->render('admin/dashboard.html.twig', [
 			 'page_title' => 'Dashboard',
 		 ]);
@@ -49,13 +37,18 @@ class DashboardController extends AbstractDashboardController {
 		yield MenuItem::linkToRoute('Dashboard', 'fa fa-table-columns', 'admin');
 		yield MenuItem::linkToCrud(
 			'Streamers',
-			'fas fa-map-marker-alt',
+			'fas fa-headset',
 			Streamer::class
 		);
 		yield MenuItem::linkToCrud(
 			'Compagnies',
-			'fas fa-comments',
+			'fas fa-building',
 			Company::class
+		);
+		yield MenuItem::linkToCrud(
+			'Administrateurs',
+			'fas fa-lock',
+			Admin::class
 		);
 	}
 
