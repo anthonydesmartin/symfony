@@ -41,9 +41,9 @@
                 </p>
                 <p class="card-text">
                     {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                        <a href="{{ path('app_company_show_contract', {id: contract.id}) }}" class="btn btn-primary">Voir le contrat</a>
+                        <a href="{{ path('app_company_show_contract', {id: contract.id}) }}" class="btn btn-primary mt-2">Voir le contrat</a>
                     {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
-                        <a href="{{ path('app_streamer_show_contract', {id: contract.id}) }}" class="btn btn-primary">Voir le contrat</a>
+                        <a href="{{ path('app_streamer_show_contract', {id: contract.id}) }}" class="btn btn-primary mt-2">Voir le contrat</a>
                     {% endif %}
                     {% if contract.hasContractStatus[0].getSignatureCompany == null and app.user.roles[0] == "ROLE_COMPANY" %}
                         <a href="{{ path('app_company_contract_signature', {id: contract.id}) }}" class="btn btn-warning text-dark">Signer le contrat</a>

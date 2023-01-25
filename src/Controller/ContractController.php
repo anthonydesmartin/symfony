@@ -217,7 +217,7 @@ class ContractController extends AbstractController
             // get form data and concat to string for signature
             $sign = $form->get('first_name')->getData() . ' ' . $form->get('last_name')->getData();
             // set signature to contract status
-            $contractStatus->setSignatureCompany($sign);
+            $contractStatus->setSignatureStreamer($sign);
             // set representative role to "company"
             $representing->setRole('ROLE_STREAMER');
             // check if contract is signed by company and streamer
