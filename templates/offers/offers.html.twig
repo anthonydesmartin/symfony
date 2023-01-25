@@ -3,16 +3,16 @@
 {% block title %}Votre profile{% endblock %}
 
 {% block body %}
-    <main class="container">
-        <div class="row">
+    <main class="container ">
+        <div class="container bg-white rounded-4 mt-5 col-xl-6 col-lg-8 col-md-10 col-sm-12">
             {% for proposal in proposals %}
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
+                <div class="col-12 pt-1 pb-3 ">
+                    <div class="card mt-3 ">
+                        <div class="card-header ">
                             {% if app.user.roles[0] == "ROLE_STREAMER" %}
-                                <h3 class="card-title">Offre reçu de {{ proposal.company.name }}</h3>
+                                <h3 class="card-title text-nowrap text-center">Offre reçu de {{ proposal.company.name }}</h3>
                             {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
-                                <h3 class="card-title m-1">Offre envoyé à {{ proposal.streamer.username }}</h3>
+                                <h3 class="card-title m-1 text-center">Offre envoyé à {{ proposal.streamer.username }}</h3>
                             {% endif %}
                         </div>
                         <div class="card-body">
@@ -21,9 +21,18 @@
                             <h4 class="card-text border-bottom">Format</h4>
                             <p class="card-text">{{ proposal.format }}</p>
                             {% if app.user.roles[0] == "ROLE_COMPANY" %}
-                                <p class="card-text">Status : {{ proposal.hasProposalStatus.name }}</p>
+                                <p class="card-text">Status :
+                                    {% if proposal.hasProposalStatus.id == 2 %}
+                                    <span class="text-success">{{ proposal.hasProposalStatus.name }}</span></p>
+                            {% elseif proposal.hasProposalStatus.id == 1 %}
+                                    <span class="text-warning">{{ proposal.hasProposalStatus.name }}</span></p>
+                            {% elseif proposal.hasProposalStatus.id == 3 %}
+                                    <span class="text-danger">{{ proposal.hasProposalStatus.name }}</span></p>
+                            {% endif %}
                                 {% if proposal.hasProposalStatus.id == 2 %}
                                     <a href="{{ path('app_make_contract', {id: proposal.streamer.id }) }}" class="btn btn-success" >Générer un contrat</a>
+                                {% elseif proposal.hasProposalStatus.id == 3 %}
+                                    <a href="{{ path('app_delete_offers', { id:proposal.id })}}" class="btn btn-danger" >Supprimer l'offre</a>
                                 {% endif %}
                             {% endif %}
                         </div>
