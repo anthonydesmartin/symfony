@@ -68,6 +68,9 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $profile_picture = null;
 
+    #[ORM\OneToMany(mappedBy: 'hasRepresentativeStreamer', targetEntity: Representative::class)]
+    private Collection $representatives;
+
     public function __construct()
     {
         $this->streamThis = new ArrayCollection();
@@ -76,6 +79,7 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
         $this->hasProposal = new ArrayCollection();
         $this->isOn = new ArrayCollection();
         $this->isContent = new ArrayCollection();
+        $this->representatives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -373,6 +377,36 @@ class Streamer implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProfilePicture(string $profile_picture): self
     {
         $this->profile_picture = $profile_picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Representative>
+     */
+    public function getRepresentatives(): Collection
+    {
+        return $this->representatives;
+    }
+
+    public function addRepresentative(Representative $representative): self
+    {
+        if (!$this->representatives->contains($representative)) {
+            $this->representatives->add($representative);
+            $representative->setHasRepresentativeStreamer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepresentative(Representative $representative): self
+    {
+        if ($this->representatives->removeElement($representative)) {
+            // set the owning side to null (unless already changed)
+            if ($representative->getHasRepresentativeStreamer() === $this) {
+                $representative->setHasRepresentativeStreamer(null);
+            }
+        }
 
         return $this;
     }

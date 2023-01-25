@@ -2,31 +2,53 @@
 
 
 {% block body %}
-<div class="container mt-5">
+<div class="row align-items-center justify-content-center col-12">
     {% for contract in contracts %}
-        <div class="card col-6">
-            <h5 class="card-header">Contrat entre vous et {{ contract.streamer.username }}</h5>
+        <div class="card col-5 m-3">
+            <h5 class="card-header">Contrat entre {{ contract.company.name }} et {{ contract.streamer.username }}</h5>
             <div class="card-body">
                 <p class="card-text">Format de la campagne: {{ contract.format }}</p>
                 <p class="card-text">Prix de la campagne: {{ contract.price }} €</p>
                 <p class="card-text mb-1">
                     {% if contract.hasContractStatus[0].getSignatureStreamer != null %}
-                        <span class="badge bg-success">Contrat signé par le streamer</span>
+                        {% if app.user.roles[0] == "ROLE_STREAMER" %}
+                            <span class="badge bg-success">Contrat signé par vous</span>
+                        {% else %}
+                            <span class="badge bg-success">Contrat signé par le streamer</span>
+                        {% endif %}
                     {% else %}
-                        <span class="badge bg-danger">Contrat non signé par le streamer</span>
+                        {% if app.user.roles[0] == "ROLE_STREAMER" %}
+                            <span class="badge bg-danger">Contrat non signé par vous</span>
+                        {% else %}
+                            <span class="badge bg-danger">Contrat non signé par le streamer</span>
+                        {% endif %}
                     {% endif %}
                 </p>
                 <p class="card-text mb-1">
                     {% if contract.hasContractStatus[0].getSignatureCompany != null %}
-                        <span class="badge bg-success">Contrat signé par vous</span>
+                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                            <span class="badge bg-success">Contrat signé par vous</span>
+                        {% else %}
+                            <span class="badge bg-success">Contrat signé par {{ contract.company.name }}</span>
+                        {% endif %}
                     {% else %}
-                        <span class="badge bg-danger">Contrat non signé</span>
+                        {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                            <span class="badge bg-danger">Contrat non signé par vous</span>
+                        {% else %}
+                            <span class="badge bg-danger">Contrat non signé par {{ contract.company.name }}</span>
+                        {% endif %}
                     {% endif %}
                 </p>
                 <p class="card-text">
-                    <a href="{{ path('app_company_show_contract', {id: contract.id}) }}" class="btn btn-primary">Voir le contrat</a>
-                    {% if contract.hasContractStatus[0].getSignatureCompany == null %}
+                    {% if app.user.roles[0] == "ROLE_COMPANY" %}
+                        <a href="{{ path('app_company_show_contract', {id: contract.id}) }}" class="btn btn-primary">Voir le contrat</a>
+                    {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
+                        <a href="{{ path('app_streamer_show_contract', {id: contract.id}) }}" class="btn btn-primary">Voir le contrat</a>
+                    {% endif %}
+                    {% if contract.hasContractStatus[0].getSignatureCompany == null and app.user.roles[0] == "ROLE_COMPANY" %}
                         <a href="{{ path('app_company_contract_signature', {id: contract.id}) }}" class="btn btn-warning text-dark">Signer le contrat</a>
+                    {% elseif contract.hasContractStatus[0].getSignatureStreamer == null and app.user.roles[0] == "ROLE_STREAMER" %}
+                        <a href="{{ path('app_streamer_contract_signature', {id: contract.id}) }}" class="btn btn-warning text-dark">Signer le contrat</a>
                     {% endif %}
                 </p>
 

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230123160420 extends AbstractMigration
+final class Version20230125000109 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,12 +23,12 @@ final class Version20230123160420 extends AbstractMigration
         $this->addSql('CREATE TABLE category (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE company (id INT AUTO_INCREMENT NOT NULL, siret VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, mail VARCHAR(255) DEFAULT NULL, head_office VARCHAR(255) DEFAULT NULL, register VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, UNIQUE INDEX UNIQ_4FBF094F26E94372 (siret), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE contract (id INT AUTO_INCREMENT NOT NULL, streamer_id INT NOT NULL, company_id INT NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, price INT NOT NULL, format VARCHAR(255) NOT NULL, modalities VARCHAR(255) NOT NULL, INDEX IDX_E98F285925F432AD (streamer_id), INDEX IDX_E98F2859979B1AD6 (company_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE contract_status (id INT AUTO_INCREMENT NOT NULL, contract_id INT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_474080512576E0FD (contract_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE contract_status (id INT AUTO_INCREMENT NOT NULL, contract_id INT NOT NULL, name VARCHAR(255) NOT NULL, signature_company VARCHAR(255) DEFAULT NULL, signature_streamer VARCHAR(255) DEFAULT NULL, INDEX IDX_474080512576E0FD (contract_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE platform (id INT AUTO_INCREMENT NOT NULL, has_type_id INT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_3952D0CBA2BDE448 (has_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE platform_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE proposal (id INT AUTO_INCREMENT NOT NULL, streamer_id INT NOT NULL, company_id INT NOT NULL, has_proposal_status_id INT NOT NULL, format VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, INDEX IDX_BFE5947225F432AD (streamer_id), INDEX IDX_BFE59472979B1AD6 (company_id), INDEX IDX_BFE59472EB4EA67B (has_proposal_status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE proposal_status (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE representative (id INT AUTO_INCREMENT NOT NULL, has_representative_id INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, role VARCHAR(255) NOT NULL, INDEX IDX_2507390EC1A5C1BB (has_representative_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE representative (id INT AUTO_INCREMENT NOT NULL, has_representative_id INT NOT NULL, has_representative_streamer_id INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, role VARCHAR(255) NOT NULL, INDEX IDX_2507390EC1A5C1BB (has_representative_id), INDEX IDX_2507390EE8F5B369 (has_representative_streamer_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE streamer (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, followers BIGINT NOT NULL, mail VARCHAR(255) DEFAULT NULL, siret BIGINT DEFAULT NULL, id_streamer VARCHAR(255) NOT NULL, is_mature TINYINT(1) NOT NULL, profile_picture VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_2DF6AE32F85E0677 (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE streamer_category (streamer_id INT NOT NULL, category_id INT NOT NULL, INDEX IDX_2B10584025F432AD (streamer_id), INDEX IDX_2B10584012469DE2 (category_id), PRIMARY KEY(streamer_id, category_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE streamer_company (streamer_id INT NOT NULL, company_id INT NOT NULL, INDEX IDX_111105B025F432AD (streamer_id), INDEX IDX_111105B0979B1AD6 (company_id), PRIMARY KEY(streamer_id, company_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -44,6 +44,7 @@ final class Version20230123160420 extends AbstractMigration
         $this->addSql('ALTER TABLE proposal ADD CONSTRAINT FK_BFE59472979B1AD6 FOREIGN KEY (company_id) REFERENCES company (id)');
         $this->addSql('ALTER TABLE proposal ADD CONSTRAINT FK_BFE59472EB4EA67B FOREIGN KEY (has_proposal_status_id) REFERENCES proposal_status (id)');
         $this->addSql('ALTER TABLE representative ADD CONSTRAINT FK_2507390EC1A5C1BB FOREIGN KEY (has_representative_id) REFERENCES company (id)');
+        $this->addSql('ALTER TABLE representative ADD CONSTRAINT FK_2507390EE8F5B369 FOREIGN KEY (has_representative_streamer_id) REFERENCES streamer (id)');
         $this->addSql('ALTER TABLE streamer_category ADD CONSTRAINT FK_2B10584025F432AD FOREIGN KEY (streamer_id) REFERENCES streamer (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE streamer_category ADD CONSTRAINT FK_2B10584012469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE streamer_company ADD CONSTRAINT FK_111105B025F432AD FOREIGN KEY (streamer_id) REFERENCES streamer (id) ON DELETE CASCADE');
@@ -65,6 +66,7 @@ final class Version20230123160420 extends AbstractMigration
         $this->addSql('ALTER TABLE proposal DROP FOREIGN KEY FK_BFE59472979B1AD6');
         $this->addSql('ALTER TABLE proposal DROP FOREIGN KEY FK_BFE59472EB4EA67B');
         $this->addSql('ALTER TABLE representative DROP FOREIGN KEY FK_2507390EC1A5C1BB');
+        $this->addSql('ALTER TABLE representative DROP FOREIGN KEY FK_2507390EE8F5B369');
         $this->addSql('ALTER TABLE streamer_category DROP FOREIGN KEY FK_2B10584025F432AD');
         $this->addSql('ALTER TABLE streamer_category DROP FOREIGN KEY FK_2B10584012469DE2');
         $this->addSql('ALTER TABLE streamer_company DROP FOREIGN KEY FK_111105B025F432AD');
