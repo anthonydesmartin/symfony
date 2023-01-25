@@ -80,7 +80,7 @@ class StreamerRepository extends ServiceEntityRepository implements
 		if ($username !== '')
 		{
 			$query->andWhere($query->expr()->like('s.username', ':username'))
-				->setParameter('username', $username . '%');
+				->setParameter('username', '%'.$username . '%');
 		};
 		if ($game !== '')
 		{

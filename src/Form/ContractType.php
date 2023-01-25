@@ -30,12 +30,12 @@ class ContractType extends AbstractType
             ->add('format', ChoiceType::class, [
                 'label' => 'Format',
                 'choices' => [
-                    'Bannières de publicité' => 'banner',
-                    'Placement de produit' => 'product_show',
-                    'Test de produit' => 'product_test',
-                    'Post sur les réseaux sociaux' => 'post',
-                    'Vidéo' => 'video',
-                    'Photo' => 'photo',
+                    'Bannières de publicité' => 'Bannières de publicité',
+                    'Placement de produit' => 'Placement de produit',
+                    'Test de produit' => 'Test de produit',
+                    'Post sur les réseaux sociaux' => 'Post sur les réseaux sociaux',
+                    'Vidéo' => 'Vidéo',
+                    'Photo' => 'Photo',
                 ],
                 'required' => true,
             ])
