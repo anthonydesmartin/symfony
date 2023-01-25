@@ -16,12 +16,35 @@ import 'chartkick/chart.js';
 const $ = require('jquery');
 require('bootstrap');
 
-//Création du tableau pour les graphiques
-const data = [
-  {name: 'Apple', data: {'Tuesday': 3, 'Friday': 4}, stack: 'fruit'},
-  {name: 'Pear', data: {'Tuesday': 1, 'Friday': 8}, stack: 'fruit'},
-  {name: 'Carrot', data: {'Tuesday': 3, 'Friday': 4}, stack: 'vegetable'},
-  {name: 'Beet', data: {'Tuesday': 1, 'Friday': 8}, stack: 'vegetable'},
-];
+let data;
 
-new Chartkick.LineChart("chart", data);
+if (window.location.href.indexOf("streamer") > -1){
+  data = [
+    {name: 'Followers',
+      data: {
+        'Monday': 0,
+        'Tuesday': 1000,
+        'Wednesday': 3540,
+        'Thursday': 6700,
+        'Friday': 5432,
+      },
+    },
+  ];
+}
+if (window.location.href.indexOf("company") > -1){
+  data = [
+    {name: 'Contrats',
+      data: {
+        'Monday': 0,
+        'Tuesday': 2,
+        'Wednesday': 5,
+        'Thursday': 6,
+        'Friday': 9,
+      },
+    },
+  ];
+}
+
+new Chartkick.LineChart('chart', data);
+
+
