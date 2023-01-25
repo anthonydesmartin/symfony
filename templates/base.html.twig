@@ -15,7 +15,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column">
 {% set url = path(app.request.attributes.get('_route'),
     app.request.attributes.get('_route_params')) %}
 {% block nav %}
@@ -118,9 +118,9 @@
             <div class="row gy-4 gx-5">
                 <div class="col-lg-4 col-md-6">
                     <h5 class="h2 text-white">PartnerPact</h5>
-                    <p class="small text-black-50">PartnerPAct est l'application qui facilite les partenariats entre les
+                    <p class="small text-white">PartnerPact est l'application qui facilite les partenariats entre les
                         entreprises et les streamers</p>
-                    <p class="small text-black-50 mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">PartnerPact.com</a>
+                    <p class="small text-white mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">PartnerPact.com</a>
                     </p>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -133,14 +133,14 @@
 
                 <div class="col-lg-6 col-md-6">
                     <h5 class="text-white mb-3">Newsletter</h5>
-                    <p class="small text-black-50">
-                        Rejoignez les utilisateurs satisfaits de PartnerPAct en vous inscrivant
+                    <p class="small text-white">
+                        Rejoignez les utilisateurs satisfaits de PartnerPact en vous inscrivant
                         à notre newsletter pour recevoir les dernières nouveautés et
                         mises à jour de notre application.</p>
                     <form action="#">
                         <div class="input-group mb-3">
-                            <input class="form-control" type="text" placeholder="Recipient's username"
-                                   aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input class="form-control" type="text" placeholder="Votre Mail"
+                                   aria-label="newletters_mail" aria-describedby="button-addon2">
                             <button class="btn btn-primary col-3" id="button-addon2" type="button"><i class="fas fa-paper-plane">Envoyer</i></button>
                         </div>
                     </form>

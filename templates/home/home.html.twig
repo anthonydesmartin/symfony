@@ -16,39 +16,42 @@
 {% block body %}
     <main class="container-fluid">
         {% block section %}
-            <section class="row rounded shadow p-3 mb-5 mt-3 flex-sm-column flex-md-row">
+            <section class="row rounded shadow  mb-5 mt-3 flex-sm-column flex-md-row">
                 <div class="col d-flex align-items-center row">
 
-                    <h1>Bienvenue dans notre espace de ressource</h1>
-
-                    <h2 class="h2_home">A propos :</h2>
-                    <p class="fs-2 fw-bolder">C’est une plateforme de mise en relation streamers et de marque.
-                        Cette plateforme sécurisera les contrats entre les partis
-                        et agira comme un intermédiaire.
+                    <h1>Bienvenue sur PartnerPact</h1>
+                    <p class="fs-1 fw-bolder text-center">Nous sômmmes une plateforme de mise en relation streamers et les marques.
+                        Cette plateforme sécurisera les contrats entre les partis.
                     </p>
 
                 </div>
-                <div class="col">
-                    <img style="width:95%" alt="Logo" src="/img/streamspons.png" class="">
+                <div class="col p-0">
+                    <img alt="Logo" src="/img/streamspons.png" class="img-fluid w-100">
                 </div>
             </section>
         {% endblock %}
 
 
-        <aside><p class="fs-2 fw-bolder">Vous voulez vous associer à des streamers influents pour promouvoir votre
-                marque? Rejoignez notre plateforme pour découvrir les talents les plus pertinents. Notre plateforme est
+        <aside>
+            <div class="d-flex align-items-center justify-content-center">
+                <span class="fs-2 text-decoration-underline mb-3 text-center">Pour les entreprises</span>
+            </div>
+            <p class="fs-4 fw-bolder mb-3 text-center">Vous voulez vous associer à des streamers influents pour promouvoir votre
+                marque? <br> Rejoignez notre plateforme pour découvrir les talents les plus pertinents. Notre plateforme est
                 le lieu idéal pour vous qui cherchent à s'associer à des streamers pour une campagne de sponsoring
                 réussie. </p>
-            <div class="offset-4 col-4">
-                <button type="button" class="btn btn-primary col fs-2 fw-bolder">Retrouvez ici nos Streamers</button>
+            <div class="d-flex align-items-center justify-content-center">
+                <span class="fs-2 text-decoration-underline mb-3 text-center">Pour les streamers</span>
             </div>
-            <hr>
-            <p class="fs-2 fw-bolder"> Vous êtes à la recherche de nouveaux partenariats pour votre chaîne de streaming?
+
+            <p class="fs-4 fw-bolder mb-3 text-center">
+                Vous êtes à la recherche de nouveaux partenariats pour votre chaîne de streaming?
                 Rejoignez notre plateforme et découvrez les opportunités de parrainage uniques qui s'offrent à vous pour
                 booster votre carrière de streamer. </p>
-            <div class="offset-4 col-4">
-                <button type="button" class="btn btn-primary col fs-2 fw-bolder">Retrouvez ici nos Sponsors</button>
+            <div class="d-flex align-items-end justify-content-center">
+                <a type="button" class="btn btn-primary fs-2 fw-bolder text-center rounded-4" href="{{ path('app_register_streamer') }}">Inscrivez-vous maintenant!</a>
             </div>
+
         </aside>
     </main>
 
