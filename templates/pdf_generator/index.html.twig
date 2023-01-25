@@ -3,20 +3,20 @@
 <p style="text-align: center; color: mediumvioletred">Par la société PartnerPact</p>
 <hr>
 <h4>Informations relatives:</h4>
-<ol style="padding: 0; margin: 5px; list-style-type: none">Influenceur : <strong>{{ contract.company.name }}</strong>
-    <li>{{ contract.streamer.mail }}</li>
-    <li>{{ contract.streamer.siret }}</li>
-</ol>
-<br>
-<ol style="padding: 0; margin: 5px; list-style-type: none">Annonceur : <strong>{{ contract.streamer.username }}</strong>
+<ol style="padding: 0; margin: 5px; list-style-type: none">Annonceur : <strong>{{ contract.company.name }}</strong>
     <li>{{ contract.company.mail }}</li>
     <li>{{ contract.company.siret }}</li>
+</ol>
+<br>
+<ol style="padding: 0; margin: 5px; list-style-type: none">Influenceur : <strong>{{ contract.streamer.username }}</strong>
+    <li>{{ contract.streamer.mail }}</li>
+    <li>{{ contract.streamer.siret }}</li>
 </ol>
 <br>
 <hr>
 Entre les soussignés :<br>
 <ul>
-    <li>La société {{ contract.company.name }}, située à {{ contract.company.headOffice }} représentée par M/Mme . spécialisé dans la {{ contract.company.register }}</li>
+    <li>La société {{ contract.company.name }}, située à {{ contract.company.headOffice }} spécialisé dans la {{ contract.company.register }}</li>
     <li>L’influenceur {{ contract.streamer.username }} représenté en son nom</li>
 </ul>
 Ce contrat a pour but de cadrer et régir la collaboration conclue entre l’influenceur {{ contract.streamer.username }} et la société {{ contract.company.name }}

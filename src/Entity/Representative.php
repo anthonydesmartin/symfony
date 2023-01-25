@@ -23,8 +23,12 @@ class Representative
     private ?string $role = null;
 
     #[ORM\ManyToOne(inversedBy: 'representatives')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Company $hasRepresentative = null;
+
+    #[ORM\ManyToOne(inversedBy: 'representatives')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Streamer $hasRepresentativeStreamer = null;
 
     public function getId(): ?int
     {
@@ -75,6 +79,18 @@ class Representative
     public function setHasRepresentative(?Company $hasRepresentative): self
     {
         $this->hasRepresentative = $hasRepresentative;
+
+        return $this;
+    }
+
+    public function getHasRepresentativeStreamer(): ?Streamer
+    {
+        return $this->hasRepresentativeStreamer;
+    }
+
+    public function setHasRepresentativeStreamer(?Streamer $hasRepresentativeStreamer): self
+    {
+        $this->hasRepresentativeStreamer = $hasRepresentativeStreamer;
 
         return $this;
     }
