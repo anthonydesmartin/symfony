@@ -25,10 +25,13 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class CompanyController extends AbstractController
 {
     #[Route('/company', name: 'app_company')]
-    public function index(): Response
+    public function index(StreamerRepository $streamerRepo): Response
     {
+        $streamers = $streamerRepo->getTopStreamers();
+
         return $this->render('company/company.html.twig', [
             'controller_name' => 'CompanyController',
+            'streamers'=> $streamers
         ]);
     }
 
@@ -145,6 +148,8 @@ class CompanyController extends AbstractController
             'profile_picture' => $streamer->getProfilePicture()
         ]);
     }
+
+
 
 
 
