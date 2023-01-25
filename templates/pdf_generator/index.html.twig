@@ -1,0 +1,86 @@
+
+<h3 style="text-align: center">Contrat de Partenariat de marketing d’influence entre Influenceur/annonceur</h3>
+<p style="text-align: center; color: mediumvioletred">Par la société PartnerPact</p>
+<hr>
+<h4>Informations relatives:</h4>
+<ol style="padding: 0; margin: 5px; list-style-type: none">Influenceur : <strong>{{ contract.company.name }}</strong>
+    <li>{{ contract.streamer.mail }}</li>
+    <li>{{ contract.streamer.siret }}</li>
+</ol>
+<br>
+<ol style="padding: 0; margin: 5px; list-style-type: none">Annonceur : <strong>{{ contract.streamer.username }}</strong>
+    <li>{{ contract.company.mail }}</li>
+    <li>{{ contract.company.siret }}</li>
+</ol>
+<br>
+<hr>
+Entre les soussignés :<br>
+<ul>
+    <li>La société {{ contract.company.name }}, située à {{ contract.company.headOffice }} représentée par M/Mme . spécialisé dans la {{ contract.company.register }}</li>
+    <li>L’influenceur {{ contract.streamer.username }} représenté en son nom</li>
+</ul>
+Ce contrat a pour but de cadrer et régir la collaboration conclue entre l’influenceur {{ contract.streamer.username }} et la société {{ contract.company.name }}
+dans l’objectif de mener à bien les obligations du contrat.
+<p>Ce contrat précise les droits et obligations des deux parties précédemment évoquées.</p>
+<p>Le contrat de partenariat est un contrat administratif par lequel l'Etat ou un établissement public de l'Etat confie à un tiers,
+    pour une période déterminée en fonction de la durée d'amortissement des investissements ou des modalités de financement retenues,
+    une mission globale ayant pour objet le financement, la construction ou la transformation, l'entretien, la maintenance,
+    l'exploitation ou la gestion d'ouvrages, d'équipements ou de biens immatériels nécessaires au service public.</p>
+
+<h3 style="text-align: center">Contenus éditoriaux à produire</h3>
+
+<p>l'influenceur à pour mission de faire un {{ contract.format }} sur la plateforme de streaming et présenter le produit de l'anonceur en toute transparence.</p>
+<h3 style="text-align: center">Média de diffusion de la campagne</h3>
+<p>La campagne se passera sur la plateforme de streaming Twitch, pendant les horaires de travail de l'influenceur.</p>
+<h3 style="text-align: center">Rémunération de la campagne et conditions</h3>
+<p>Cette mission sera rémunéré {{ contract.price }} € si les modalités sont remplit et que les conditions de l'annonceur sont respectées :<br> <span>{{ contract.modalities }}</span> </p>
+<h3 style="text-align: center">Clause d'éxclusivité</h3>
+<p>Pendant toute la durée du contrat de travail, M. {{ contract.streamer.username }} s'engage à consacrer l'intégralité et l'exclusivité de son activité professionnelle
+au service de la Société {{ contract.company.name }} s'interdit, en conséquence, tout autre occupation professionnelle de
+quelque nature que ce soit, sauf accord écrit et préalable de la Société.</p>
+<br>
+
+<p>Engagement réciproque au respect de l’article 20 de la loi du 21 juin 2004 pour la confiance dans
+l’économie numérique stipule : « Sont réputées trompeuses les pratiques commerciales qui ont pour
+objet [...] d’utiliser un contenu dans les médias pour faire la promotion d’un produit ou d’un service
+alors que le professionnel a financé celle-ci lui-même, sans l’indiquer clairement dans le contenu ou à
+l’aide d’images ou de sons clairement identifiables par le consommateur. »</p>
+
+<p>Engagement réciproque au respect de la loi n° 2018-493 du 20 juin 2018 relative à la protection des
+données personnelles (RGPD règlement général sur la protection des données).</p>
+
+<h3 style="text-align: center">Durée du contrat</h3>
+<p>La collaboration conclue entre l’influenceur et la société est définie selon les dates suivantes : {{ contract.startDate|date("Y-m-d") }} et {{ contract.endDate|date("Y-m-d") }}
+    et s’achèvera à la réalisation intégrale des obligations sans formalités supplémentaires.</p>
+
+<h3 style="text-align: center">Droit de modification</h3>
+<p>Des modifications peuvent être apportées à ce contrat à la demande de l’une ou l’autre partie suite à
+un accord écrit et signé. Il faudra alors éditer un nouveau contrat ou déclarer par mail que ces
+nouvelles données sont des éléments complémentaires du présent contrat.</p>
+
+<h3 style="text-align: center">Résiliation</h3>
+Chaque partie pourra résilier la convention, de plein droit, à tout moment et sans préavis, au cas où
+l’un manquerait à ses obligations évoquées dans ce contrat. L’annonce de la résiliation devra être
+effectuée directement par mail avant la réalisation des obligations.
+<br>
+<h3 style="text-align: center">Litiges</h3>
+<p>La société {{ contract.company.name }} et l’influenceur {{ contract.streamer.username }} s’engagent à régler à l’amiable tout problème qui pourrait survenir
+dans le présent contrat. En cas d’impossibilité de régler ces éléments à l’amiable, les tribunaux de la
+ville de {{ contract.company.headOffice }} seront déclarés comme compétents pour intervenir et résoudre la situation.
+Fait à {{ contract.company.headOffice }} le {{ "now"|date("m/d/Y") }} en deux exemplaires originaux</p>
+<hr>
+<ul>
+    <p>Signature de la société {{ contract.company.name }} précédé de la mention « lu et approuvé »</p>
+    {% if contractStatus[0].getSignatureCompany == null %}
+        <p style="color: crimson">Signature manquante !</p>
+    {% else %}
+        <p>lu et approuvé par {{ contractStatus[0].getSignatureCompany }}</p>
+    {% endif %}
+    <p>Signature de L’influenceur {{ contract.streamer.username }} précédé de la mention « lu et approuvé »</p>
+    {% if contractStatus[0].getSignatureStreamer == null %}
+        <p style="color: crimson">Signature manquante !</p>
+    {% else %}
+        <p>lu et approuvé par {{ contractStatus[0].getSignatureStreamer }}</p>
+    {% endif %}
+</ul>
+
