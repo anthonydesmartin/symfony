@@ -21,19 +21,18 @@ class RegistrationController extends AbstractController
 {
 
     function clearHeaders(){
-        header_remove('Authorization');
-        header_remove('Client-Id');
-        header_remove('ContentType');
+        header_remove();
+		session_id('streamer');
     }
 
-    function getStreamerTwitchIdAndPp($username, $client)
+    function getStreamerTwitchIdAndPp($id, $client)
     {
         $this->clearHeaders();
         $twitch_oauth_token = 'Bearer trmxm96ywdu3wfb820qag5i973g8mp';
         $twitch_client_id = 'niurwn3bhzyl581c7s56w9y5l9i2zl';
         $response = $client->request(
             'GET',
-            'https://api.twitch.tv/helix/users?login='.$username,
+            'https://api.twitch.tv/helix/users?id='.$id,
             [
                 'headers' => [
                     "Authorization: $twitch_oauth_token",

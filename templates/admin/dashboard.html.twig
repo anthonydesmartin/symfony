@@ -1,0 +1,7 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Dashboard' %}
+
+{% block page_content %}
+    <a class="btn btn-primary" href="{{ path('app_streamer_profile_refresh_all') }}">Actualiser les streamers</a>
+{% endblock %}

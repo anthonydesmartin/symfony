@@ -154,9 +154,12 @@ class StreamerController extends AbstractController
     Response
     {
         $streamer = $this->getUser()->getUserIdentifier();
-        $streamerpp = $registrationController->getStreamerTwitchIdAndPp($streamer, $client);
-        $streamerfollowers = $registrationController->getStreamerTwitchFollowers($client, $streamerpp['id']);
         $user = $streamerRepo->findOneBy(['username' => $streamer]);
+        $streamerpp = $registrationController->getStreamerTwitchIdAndPp($user->getIdStreamer(),
+	        $client);
+        $streamerfollowers =
+	        $registrationController->getStreamerTwitchFollowers($client,
+		        $user->getIdStreamer());
         $user->setProfilePicture($streamerpp['profile_image_url']);
         $user->setFollowers($streamerfollowers);
         $entityManager->persist($user);
@@ -164,6 +167,28 @@ class StreamerController extends AbstractController
 
         return $this->redirectToRoute('app_streamer_profile');
     }
+
+	#[Route('/refreshAll', name: 'app_streamer_profile_refresh_all')]
+	public function refreshAll(RegistrationController $registrationController,
+		StreamerRepository $streamerRepo, HttpClientInterface
+	$client, EntityManagerInterface $entityManager):
+	Response
+	{
+		$streamers = $streamerRepo->findAll();
+		set_time_limit(0);
+		foreach ($streamers as $streamer){
+			$streamerpp = $registrationController->getStreamerTwitchIdAndPp
+			($streamer->getIdStreamer(), $client);
+			$streamerfollowers = $registrationController->getStreamerTwitchFollowers($client, $streamer->getIdStreamer());
+			$user = $streamerRepo->findOneBy(['username' => $streamer->getUsername()]);
+			$user->setProfilePicture($streamerpp['profile_image_url']);
+			$user->setFollowers($streamerfollowers);
+			$entityManager->persist($user);
+			$entityManager->flush();
+		}
+
+		return $this->redirectToRoute('admin');
+	}
 
 
 }
