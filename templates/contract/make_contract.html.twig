@@ -1,2 +1,44 @@
 {% extends 'base.html.twig' %}
-{{ form(contract_form) }}
+
+
+{% block body %}
+
+
+    <main class="d-flex flex-column">
+        <div class="container bg-white rounded-4 mt-5 col-xl-6 col-lg-8 col-md-10 col-sm-12">
+
+            <h1 class="text-center mt-5 mb-3">Contrat</h1>
+            {{ form_start(contract_form) }}
+
+            <div class="row mx-5">
+                <div class="flex-column text-nowrap">
+                    <span class="text-danger">*</span>
+                    {{ form_label(contract_form.end_date) }}
+                    {{ form_widget(contract_form.end_date) }}
+                </div>
+                <div class="flex-column text-nowrap">
+                    <span class="text-danger">*</span>
+                    {{ form_label(contract_form.price) }}
+                    {{ form_widget(contract_form.price) }}
+                </div>
+                <div class="flex-column text-nowrap">
+                    <span class="text-danger">*</span>
+                    {{ form_label(contract_form.format) }}
+                    {{ form_widget(contract_form.format) }}
+                </div>
+                <div class="flex-column text-nowrap">
+                    <span class="text-danger">*</span>
+                    {{ form_label(contract_form.modalities) }}
+                    {{ form_widget(contract_form.modalities) }}
+                </div>
+                <div class="flex-column text-nowrap text-center mt-4 mb-4" >
+                    {{ form_label(contract_form.submit) }}
+                    {{ form_widget(contract_form.submit) }}
+                </div>
+                {{ form_end(contract_form) }}
+            </div>
+
+        </div>
+    </main>
+{% endblock %}
+

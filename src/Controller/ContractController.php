@@ -242,5 +242,18 @@ class ContractController extends AbstractController
         ]);
     }
 
+	#[Route('/company/requests/{id}/delete', name: 'app_delete_offers')]
+	public function delete_offers($id, ProposalRepository $proposal_repo): Response
+	{
+			$proposal = $proposal_repo->find($id);
+
+			$proposal_repo->remove($proposal, true);
+
+
+		return $this->redirectToRoute('app_company_requests');
+
+	}
+
+
 
 }
