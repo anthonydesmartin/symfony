@@ -7,6 +7,7 @@
         <a class="navbar-brand" href="home.html.twig"><img alt="Logo" src="/img/logo/logo_small.png"
                                                            class="pull-left w-50"></a>
         <div class="d-flex">
+            <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_register_streamer') }}">S'inscrire</a>
             <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_login') }}">Se connecter</a>
         </div>
     </nav>
@@ -34,19 +35,18 @@
         {% endblock %}
 
 
-        <aside><p class="fs-2 fw-bolder">Vous voulez vous associer à des streamers influents pour promouvoir votre
+        <aside>
+            <p class="fs-2 fw-bolder">Vous voulez vous associer à des streamers influents pour promouvoir votre
                 marque? Rejoignez notre plateforme pour découvrir les talents les plus pertinents. Notre plateforme est
                 le lieu idéal pour vous qui cherchent à s'associer à des streamers pour une campagne de sponsoring
                 réussie. </p>
-            <div class="offset-4 col-4">
-                <button type="button" class="btn btn-primary col fs-2 fw-bolder">Retrouvez ici nos Streamers</button>
-            </div>
+
             <hr>
             <p class="fs-2 fw-bolder"> Vous êtes à la recherche de nouveaux partenariats pour votre chaîne de streaming?
                 Rejoignez notre plateforme et découvrez les opportunités de parrainage uniques qui s'offrent à vous pour
                 booster votre carrière de streamer. </p>
-            <div class="offset-4 col-4">
-                <button type="button" class="btn btn-primary col fs-2 fw-bolder">Retrouvez ici nos Sponsors</button>
+            <div class="offset-4 col-4 mt-5">
+                <a type="button" class="btn btn-primary col fs-2 fw-bolder text-center rounded-4" href="{{ path('app_register_streamer') }}">Inscrivez-vous maintenant!</a>
             </div>
         </aside>
     </main>

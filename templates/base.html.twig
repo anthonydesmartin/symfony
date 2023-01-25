@@ -5,7 +5,6 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -20,29 +19,31 @@
 {% set url = path(app.request.attributes.get('_route'),
     app.request.attributes.get('_route_params')) %}
 {% block nav %}
-    <nav class="navbar  justify-content-between border-bottom  shadow p-3 mx-6">
-        <a class="navbar-brand" href="{{ path('home_page') }}"><img alt="Logo" src="/img/logo/logo_small.png"
-                                                                    class="pull-left w-50"></a>
+    <nav class="navbar justify-content-between border-bottom  shadow p-3 mx-6">
+        <a class="navbar-brand" href="{{ path('home_page') }}"><img alt="Logo" src="/img/logo/logo_small.png" class="pull-left w-50"></a>
         <div class="d-flex align-items-center">
             {% if app.user.roles[0] == "ROLE_STREAMER" %}
-                 {% if url == "/streamer/offers" %}
-                        <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_streamer_offers') }}">Mes offres</a>
-                    {% else %}
-                        <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_offers') }}">Mes offres</a>
-                 {% endif %}
+                {% if url == "/streamer/offers" %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_streamer_offers') }}">Mes
+                        offres</a>
+                {% else %}
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_offers') }}">Mes offres</a>
+                {% endif %}
                 {% if url == "/streamer/contracts" %}
-                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_streamer_contracts') }}">Mes contrats</a>
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_streamer_contracts') }}">Mes
+                        contrats</a>
                 {% else %}
                     <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_streamer_contracts') }}">Mes contrats</a>
                 {% endif %}
             {% elseif app.user.roles[0] == "ROLE_COMPANY" %}
                 {% if url == "/company/requests" %}
-                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_company_requests') }}">Mes offres</a>
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_company_requests') }}">Mes demandes</a>
                 {% else %}
-                    <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_requests') }}">Mes offres</a>
+                    <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_requests') }}">Mes demandes</a>
                 {% endif %}
                 {% if url == "/company/contracts" %}
-                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_company_contracts') }}">Mes contrats</a>
+                    <a class="nav-link mx-4 fs-4 fw-bolder text-success" href="{{ path('app_company_contracts') }}">Mes
+                        contrats</a>
                 {% else %}
                     <a class="nav-link mx-4 fs-4 fw-bolder" href="{{ path('app_company_contracts') }}">Mes contrats</a>
                 {% endif %}
@@ -58,23 +59,25 @@
                         {% if verif == false %}
                             <div class="position-relative">
                                 {{ app.user.name }}
-                                <span class="position-absolute top-0  translate-middle badge"><ion-icon name="warning-outline" class="text-danger"></ion-icon></span>
+                                <span class="position-absolute top-0  translate-middle badge"><ion-icon
+                                            name="warning-outline" class="text-danger"></ion-icon></span>
                             </div>
                         {% else %}
                             {{ app.user.name }}
                         {% endif %}
                     {% elseif app.user.roles[0] == "ROLE_STREAMER" %}
                         {% set verif = true %}
-                            {% if app.user.mail is null or app.user.siret is null %}
-                                {% set verif = false %}
-                            {% endif %}
+                        {% if app.user.mail is null or app.user.siret is null %}
+                            {% set verif = false %}
+                        {% endif %}
                         {% if verif == false %}
                             <div class="position-relative">
                                 {{ app.user.username }}
-                                <span class="position-absolute top-0  translate-middle badge"><ion-icon name="warning-outline" class="text-danger"></ion-icon></span>
+                                <span class="position-absolute top-0  translate-middle badge"><ion-icon
+                                            name="warning-outline" class="text-danger"></ion-icon></span>
                             </div>
-                            {% else %}
-                                {{ app.user.username }}
+                        {% else %}
+                            {{ app.user.username }}
                         {% endif %}
 
                     {% endif %}
@@ -110,35 +113,35 @@
 {% block body %}
 {% endblock %}
 {% block footer %}
-    <footer class="mt-auto w-100 py-4 flex-shrink-0">
+    <footer class="mt-5 w-100 py-4 flex-shrink-0">
         <div class="container py-4">
             <div class="row gy-4 gx-5">
                 <div class="col-lg-4 col-md-6">
-                    <h5 class="h1 text-white">FB.</h5>
-                    <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
-                    <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">Bootstrapious.com</a></p>
+                    <h5 class="h2 text-white">PartnerPact</h5>
+                    <p class="small text-black-50">PartnerPAct est l'application qui facilite les partenariats entre les
+                        entreprises et les streamers</p>
+                    <p class="small text-black-50 mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">PartnerPact.com</a>
+                    </p>
                 </div>
                 <div class="col-lg-2 col-md-6">
                     <h5 class="text-white mb-3">Quick links</h5>
                     <ul class="list-unstyled text-muted">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
+                        <li><a href="{{ path('home_page') }}">Home</a></li>
+                        <li><a href="#">CGV</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6">
-                    <h5 class="text-white mb-3">Quick links</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-6">
+
+                <div class="col-lg-6 col-md-6">
                     <h5 class="text-white mb-3">Newsletter</h5>
-                    <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                    <p class="small text-black-50">
+                        Rejoignez les utilisateurs satisfaits de PartnerPAct en vous inscrivant
+                        à notre newsletter pour recevoir les dernières nouveautés et
+                        mises à jour de notre application.</p>
                     <form action="#">
                         <div class="input-group mb-3">
-                            <input class="form-control" type="text" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-primary" id="button-addon2" type="button"><i class="fas fa-paper-plane"></i></button>
+                            <input class="form-control" type="text" placeholder="Recipient's username"
+                                   aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-primary col-3" id="button-addon2" type="button"><i class="fas fa-paper-plane">Envoyer</i></button>
                         </div>
                     </form>
                 </div>
